@@ -7,7 +7,9 @@ description: Guide to Sonner, the React toast library — install and wire up th
 
 ## Project contract
 
-Follow host instructions, the user's request and existing authorization, and project conventions before this skill's defaults. For Pavurel marketing website work, load the installed `pavurel-web-design` skill by name through the host's skill mechanism; its brand, Astro, accessibility, content, and release rules apply. Do not assume sibling skills are installed at relative paths.
+Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources.
+
+For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths.
 
 Use this skill for an existing or explicitly chosen Sonner integration. Do not introduce React, a new runtime, or a toast dependency just to decorate a static marketing page. Keep reviews read-only; carry out already authorized changes without a redundant approval step.
 

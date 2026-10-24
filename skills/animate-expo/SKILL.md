@@ -7,9 +7,9 @@ description: Build animations in React Native and Expo, making the decisions in 
 
 ## Scope and precedence
 
-Follow host instructions and tool restrictions, then the user's task and applicable project guidance. These recommendations are defaults; project brand, accessibility, architecture, and performance requirements take precedence. Examples do not authorize unrelated changes or dependency installation. Work on the concrete task instead of stopping at a readiness message.
+Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources. Examples do not authorize unrelated changes or dependency installation. Work on the concrete task instead of stopping at a readiness message.
 
-Use this skill only for a React Native or Expo project. It is outside Pavurel's current Astro website selection; do not introduce a native stack to apply these recipes. For Pavurel marketing website work, use the installed `pavurel-web-design` skill when available, otherwise the project's instructions. Before adapting native examples, check the installed Expo SDK, React Native architecture, library versions, and supported devices.
+Use this skill only for a React Native or Expo project. Do not introduce a native stack for Pavurel's Astro website or authenticated Customer/Platform web UI. For those web tasks, load an available installed profile by name: `pavurel-web-design` for marketing and `pavurel-app-design` for Customer/Platform; otherwise follow the current repository sources. Do not load these web profiles for native work or assume sibling skill paths. Before adapting native examples, check the installed Expo SDK, React Native architecture, library versions, and supported devices.
 
 A construction skill for React Native. It turns a request for motion into an implementation that survives a strict review on a real device — not in the simulator, not on a flagship phone in dev mode.
 

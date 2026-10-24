@@ -12,7 +12,9 @@ description: Search a codebase or UI for moments that could benefit from motion,
 
 ## Project and task context
 
-Follow host instructions and the user's authorized scope. Project design decisions, accessibility requirements, and architecture take precedence over the defaults below. For Pavurel marketing website work, use the installed `pavurel-web-design` skill when available; otherwise follow the project's documented Pavurel rules. Do not add a framework or dependency merely to use an example.
+Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources.
+
+For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths. Do not add a framework or dependency merely to use an example.
 
 Continue the active task without a readiness-only response. If no actionable request or artifact is available, ask for the missing context.
 

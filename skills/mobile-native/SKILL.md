@@ -7,9 +7,9 @@ description: Make a web app feel native on a phone — the small CSS and meta-ta
 
 ## Scope and precedence
 
-Follow host instructions and tool restrictions, then the user's task and applicable project guidance. These recommendations are defaults; project brand, accessibility, architecture, and performance requirements take precedence. Examples do not authorize unrelated changes or dependency installation. Work on the concrete task instead of stopping at a readiness message.
+Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources. Examples do not authorize unrelated changes or dependency installation. Work on the concrete task instead of stopping at a readiness message.
 
-For Pavurel marketing website work, use the installed `pavurel-web-design` skill when available. Otherwise follow the project's instructions and established tokens; do not assume a sibling skill path. Apply mobile fixes to the affected component, and preserve ordinary browser behavior on marketing and content pages.
+For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths. Apply mobile fixes to the affected component, and preserve ordinary browser behavior on marketing and content pages.
 
 A fix-it skill. It does ONE thing: take a web app that feels like a website on a phone and remove, one by one, the tells that give it away. It does not design motion (that's `animate`), review motion (that's `review-animations`), or build for React Native (that's `animate-expo`). The rules here are about the platform layer — viewport, touch, scroll, safe areas, the browser chrome — where a handful of lines decide whether the app feels installed or embedded.
 

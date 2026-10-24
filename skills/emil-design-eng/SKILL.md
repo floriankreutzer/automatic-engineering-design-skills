@@ -7,11 +7,13 @@ description: Apply Emil Kowalski's interaction craft to UI reviews, component po
 
 ## Task and project context
 
-Follow host/tool instructions, the user's task and authorization, and applicable project instructions before these defaults. Inspect existing design tokens, components, accessibility requirements and architecture. For Pavurel website work, load the installed `pavurel-web-design` skill by name when available; otherwise use the project's current design and content documents. Do not assume sibling skill packages exist after selective installation.
+Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources.
+
+For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths. Inspect existing design tokens, components, accessibility requirements and architecture.
 
 Treat a review request as read-only. Complete authorized implementation work without a readiness-only response or a redundant approval stop. Clarify only a material unresolved decision. Examples do not authorize a dependency installation, publication or unrelated redesign.
 
-Preserve content, semantics and keyboard/focus behavior before visual polish. Keep content visible without JavaScript and allow fully static reduced-motion behavior. Use existing native HTML/CSS capabilities before adding a runtime.
+Preserve content, semantics and keyboard/focus behavior before visual polish. Keep public static website content readable without JavaScript; preserve an authenticated application's documented secure bootstrap, access locks and fallback instead of exposing protected data. Allow fully static reduced-motion behavior. Use existing native HTML/CSS capabilities before adding a runtime.
 
 ## Core Philosophy
 
@@ -130,7 +132,7 @@ The perception of speed matters as much as actual speed. Easing amplifies this: 
 
 ## Component patterns
 
-For springs, press feedback, popovers, tooltips, interruptible transitions and CSS entry examples, read [component-patterns.md](references/component-patterns.md) when the task needs them. Preserve native semantics and visible no-JavaScript content before applying an effect.
+For springs, press feedback, popovers, tooltips, interruptible transitions and CSS entry examples, read [component-patterns.md](references/component-patterns.md) when the task needs them. Preserve native semantics and readable public static content without JavaScript. In authenticated apps, preserve the documented secure bootstrap, access locks and fallback before applying an effect.
 
 ## CSS Transform Mastery
 
@@ -403,7 +405,8 @@ For touch interactions, use a physical target device when an authorized setup is
 | Check | Response |
 | --- | --- |
 | Hidden or clipped content remains focusable | Correct semantics and focus before animating. |
-| Essential content depends on JavaScript to become visible | Keep visible base HTML/CSS; enhance after initialization. |
+| Public static website content depends on JavaScript solely to become visible | Keep visible base HTML/CSS; enhance after initialization. |
+| An app's bootstrap or fallback is changed for an effect | Preserve documented access locks and secure startup; never expose protected data to satisfy a no-JavaScript rule. |
 | Reduced-motion preference or rapid keyboard input is obstructed | Remove or reduce the effect; keep state and focus feedback. |
 | `transition: all` changes unrelated properties | Specify only the intended properties. |
 | An entrance, easing, duration or stagger distracts | Use project tokens, simplify or remove it; explain the observed impact. |

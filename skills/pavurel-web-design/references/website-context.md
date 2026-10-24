@@ -1,59 +1,47 @@
-# Pavurel website context
+# Pavurel website source map
 
-Use this public baseline to find the current authoritative source, not to freeze the website indefinitely. Checked on 2026-10-24 against website commit `63c72fed1502bc43b4142900f87d052a8b967350`. Current user decisions and applicable project instructions take precedence over this snapshot. Keep internal customer data, credentials, provider costs and unpublished business plans out of this public skill repository.
+Read the current local equivalents in the target checkout, including any renamed successors. GitHub central requirements govern development; this reference locates them and supplies review questions. Confluence documents decisions, rationale and evidence through links to the owning GitHub sources.
 
-## Public source map
+## Current public sources
 
-Read the current equivalents in the target checkout before implementation. These immutable links record the baseline:
-
-- [Repository instructions](https://github.com/floriankreutzer/conference-manager-website/blob/63c72fed1502bc43b4142900f87d052a8b967350/AGENTS.md)
-- [Design system](https://github.com/floriankreutzer/conference-manager-website/blob/63c72fed1502bc43b4142900f87d052a8b967350/docs/DESIGN-SYSTEM.md)
-- [Marketing experience and CTA placement](https://github.com/floriankreutzer/conference-manager-website/blob/63c72fed1502bc43b4142900f87d052a8b967350/docs/MARKETING-EXPERIENCE.md)
-- [Content governance and capability claims](https://github.com/floriankreutzer/conference-manager-website/blob/63c72fed1502bc43b4142900f87d052a8b967350/docs/CONTENT-GOVERNANCE.md)
-- [Architecture](https://github.com/floriankreutzer/conference-manager-website/blob/63c72fed1502bc43b4142900f87d052a8b967350/docs/ARCHITECTURE.md)
-- [Coding standards](https://github.com/floriankreutzer/conference-manager-website/blob/63c72fed1502bc43b4142900f87d052a8b967350/docs/CODING-STANDARDS.md)
-- [Security standards](https://github.com/floriankreutzer/conference-manager-website/blob/63c72fed1502bc43b4142900f87d052a8b967350/docs/SECURITY.md)
-
-## Customer and product context
-
-Address office or conference teams in mid-sized companies. Explain repeated emails and questions, missing guest/catering/equipment details, unclear changes or progress, and coordination across teams. Use qualitative benefits unless measured evidence has been approved for publication.
-
-Present **Conference Manager** as the product with subordinate **by Pavurel** endorsement. Preserve existing room reservation and customer identity ownership. Explain meeting coordination and the replacement of separate catering spreadsheets/forms within supported scope.
-
-Verify supplier access, confirmation links, direct caterer connections, company-group mapping, guest registration and check-in availability individually. A desired integration does not prove a shipping connector. Keep setup-dependent or separately assessed capabilities qualified. Do not broaden or narrow approval triggers without confirmed product evidence.
-
-## Ownership of detailed content
-
-Treat these as stable route stems; resolve localized URLs from the website's actual route map.
-
-| Page | Primary question or purpose |
+| Question | Owning source |
 | --- | --- |
-| Homepage | What does this improve, and how does one meeting move through the process? Own the single illustrative example. |
-| `product` | Which information and supported capabilities are included? |
-| `how-it-works` | How do information, responsibilities and change decisions move between teams? |
-| `workplace-teams` | What do employees, office/conference teams, service teams and IT do? |
-| `integrations` | What stays in existing systems, what connects, and what needs assessment? |
-| `pricing` | How do setup and the pilot work, and what is agreed commercially? |
-| `company` | How does Pavurel work with the customer during setup and later adjustments? |
-| `security-trust` | What access, data exchange and evidence should customer IT assess? |
-| `insights` and articles | What practical guidance does the reader need? Link to product detail rather than repeating it. |
-| `demo` | Open the separate synthetic product demo; distinguish it from a real customer pilot. |
-| `book-a-demo` | Collect the request and prepare the conversation. |
+| Mandatory instructions and precedence | [AGENTS.md](https://github.com/floriankreutzer/conference-manager-website/blob/main/AGENTS.md) |
+| Design, typography, tokens and asset families | [Design system](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/DESIGN-SYSTEM.md) |
+| Audience journey, page ownership and CTA placement | [Marketing experience](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/MARKETING-EXPERIENCE.md) |
+| Approved claims, product boundaries and offer wording | [Content governance](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/CONTENT-GOVERNANCE.md) |
+| Runtime, component and application boundary | [Architecture](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/ARCHITECTURE.md) |
+| Implementation and validation | [Coding standards](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/CODING-STANDARDS.md), [test strategy](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/TEST-STRATEGY.md) |
+| Public forms, scripts and trusted handoffs | [Security standards](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/SECURITY.md) |
 
-Keep brief orientation for visitors who arrive directly. Give full explanations one primary home and use descriptive cross-links elsewhere. Do not duplicate the homepage example as a second interactive demonstration on detail pages.
+Resolve accepted main and the exact work ref. Follow relevant approved repository changes rather than a dated skill snapshot; distinguish a proposed PR from accepted requirements. Do not transfer a central requirement into this package as an independent normative copy.
+
+## Build a task-specific content map
+
+Read the current route map and content ownership before a site-wide pass. Record each actual page's customer question, locale, detailed explanation, evidence and next step. Audit shared navigation/footer/mobile states as well as page bodies. Count repeated actions by resolved destination, even when the labels differ.
+
+Locate the source for audience, tone, commercial terms and capability claims. Verify setup-dependent behavior and separately assessed integrations against the current evidence; a desired feature or external template is not a shipping capability.
+
+Keep orientation for direct arrivals while linking to the owner of the detailed explanation. Preserve localized pairing and existing approved routes. Do not copy a frozen route/CTA matrix from a previous audit.
 
 ## Useful specialists
 
-Load the installed skill by name when it fits the current task; do not assume sibling package paths exist after selective installation.
+Look up optional installed skills by name, not sibling paths.
 
 | Task | Skill |
 | --- | --- |
-| General interaction review | `emil-design-eng` |
+| Interaction hierarchy | `emil-design-eng` |
 | Long, missing or unusual content | `break-ui` |
 | Mobile browser behavior | `mobile-native` |
-| Compare a few design variants | `prototype` |
-| Diagnose measured animation problems | `animation-performance` |
-| Review existing motion | `review-animations` |
-| Implement a justified transition | `animate` |
+| A concrete layout choice | `prototype` |
+| Observed animation performance | `animation-performance` |
+| Existing motion | `review-animations` |
+| A justified transition | `animate` |
+| Requested external catalog research | `21st-design-research` |
+| Separate authenticated application work | `pavurel-app-design` |
 
-Keep `animate-expo` and `write-swift` for separate native projects. Use `pick-ui-library` and `ask-sonner` only when a concrete dependency need exists. Apply the same brand, architecture and authorization constraints to every specialist.
+Keep native Expo/Swift work in its own project. Use dependency specialists only for a demonstrated need under the target repository's architecture process.
+
+## Verification provenance
+
+The map was checked on 2026-10-24 against website `63c72fed1502bc43b4142900f87d052a8b967350`. This ref records what was inspected; it is not a permanent implementation baseline. Do not place internal documentation URLs, customer data, credentials or private operational evidence in this public package.

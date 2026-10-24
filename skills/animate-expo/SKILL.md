@@ -5,19 +5,17 @@ description: Build animations in React Native and Expo, making the decisions in 
 
 # Building Animations in Expo
 
-## Initial Response
+## Scope and precedence
 
-When this skill is first invoked without a specific question, respond only with:
+Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources. Examples do not authorize unrelated changes or dependency installation. Work on the concrete task instead of stopping at a readiness message.
 
-> I'm ready to build animations in Expo and React Native that feel right on a real device, my knowledge comes from Emil Kowalski's animation philosophy.
-
-Do not provide any other information until the user asks a question.
+Use this skill only for a React Native or Expo project. Do not introduce a native stack for Pavurel's Astro website or authenticated Customer/Platform web UI. For those web tasks, load an available installed profile by name: `pavurel-web-design` for marketing and `pavurel-app-design` for Customer/Platform; otherwise follow the current repository sources. Do not load these web profiles for native work or assume sibling skill paths. Before adapting native examples, check the installed Expo SDK, React Native architecture, library versions, and supported devices.
 
 A construction skill for React Native. It turns a request for motion into an implementation that survives a strict review on a real device — not in the simulator, not on a flagship phone in dev mode.
 
 Mobile changes three things about animation, and everything in this skill follows from them:
 
-1. **There is no hover.** Every affordance the web puts in hover has to live in press, position, or nothing.
+1. **Touch must work without hover.** Put essential affordances in visible controls and press feedback; preserve any supported mouse, pen, keyboard, or accessibility input too.
 2. **There are two runtimes.** Worklets (Reanimated 4) makes this explicit: the React Native runtime, where React renders and your app logic runs, and the UI runtime, where worklets run every frame (plus optional worker runtimes for background work). An animation that touches the RN runtime stutters the moment the app does anything else. The whole craft is keeping motion on the UI runtime.
 3. **The user's finger is on the element.** Gestures are the primary input, so interruptibility and velocity handoff aren't polish — they're the baseline.
 
@@ -95,8 +93,8 @@ Reach for a shared value only when the value is continuous or interruptible. A p
 
 ### 4. Pick the properties
 
-- **`transform` and `opacity` are free.** Everything else is a layout pass. `width`, `height`, `margin`, `padding`, `flex`, `top`, `left`, `gap` re-run Yoga on every frame for that node *and its siblings*.
-- **The one exception: an absolutely positioned element with no children** — a tab pill, a progress bar fill. It's out of flow, so nothing else re-lays-out, and animating `width` keeps the corner radius that `scaleX` would smear.
+- **Prefer `transform` and `opacity` when they express the change.** They avoid changing layout geometry but still have rendering costs. Layout-affecting properties such as `width`, `height`, `margin`, `padding`, `flex`, `top`, `left`, and `gap` can trigger Yoga work; other properties may affect painting or compositing instead. Measure costly alternatives on supported devices.
+- **Consider a measured layout animation for small isolated elements** such as an absolutely positioned tab pill or progress fill. Animating `width` can preserve corner geometry better than `scaleX`; check its actual layout and rendering cost rather than assuming it is free.
 - **Never `scale(0)`.** Start from `scale(0.9–0.97)` + `opacity: 0`. Nothing in the real world appears from nothing.
 - **`transform` is an array and order matters** — `[{ translateY }, { scale }]` scales after moving; reversed, the translate gets scaled too. Keep translate first unless you want the multiplication.
 - **Android shadows are `elevation`, and animating elevation re-renders the shadow every frame.** Animate opacity of a pre-shadowed layer instead.
@@ -162,7 +160,7 @@ This is the mobile-specific craft, and it's where most React Native motion dies.
 
 Every hover affordance from the web has to be redesigned, not ported.
 
-- **Feedback on press-in, commit on press-out.** Waiting for the tap to complete before showing anything feels dead — this is the latency the user actually perceives.
+- **Feedback on press-in, commit through `onPress`.** Use `onPressIn` and `onPressOut` for visual state; keep the action in `Pressable`'s semantic `onPress` callback so cancellation and accessibility activation work. Do not commit an action unconditionally in `onPressOut`.
 - **`scale: 0.97` in 100–150ms** on any pressable, `Pressable` + a CSS transition. `scale` takes the label and icons with it, which is what makes it read as physical.
 - **44×44pt minimum touch target** (48dp Android). If the visual is smaller, add `hitSlop` — don't grow the visual.
 - **`pressRetentionOffset`** so a finger drifting a few pixels doesn't cancel a press the user meant.
@@ -199,7 +197,7 @@ const y = useSharedValue(reduced ? 0 : SHEET_HEIGHT);
 withSpring(0, { duration: 300, dampingRatio: 0.8, reduceMotion: ReduceMotion.System });
 ```
 
-Reduced motion means **fewer and gentler**, not zero: keep opacity and color changes that explain a state change, drop translation, scale, parallax and overshoot. Screen transitions become `animation: 'fade'`.
+Under reduced motion, keep only gentle feedback that helps explain a state change, or use an immediate transition. Drop translation, scale, parallax, and overshoot. Use `animation: 'fade'` or `'none'` for screen transitions, and check screen-specific options so they do not override this choice with a slide.
 
 **Text scales.** `allowFontScaling` is on by default, so any height you measured at default type size is wrong at 200%. Never animate to a hardcoded height — measure with `onLayout`, or animate a transform instead.
 

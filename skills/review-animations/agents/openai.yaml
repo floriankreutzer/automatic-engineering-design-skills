@@ -1,0 +1,6 @@
+interface:
+  display_name: "Review Animations"
+  short_description: "Review motion for function, access, and project fit"
+  default_prompt: "Use $review-animations to review this motion change for function, accessibility, performance, and fit with our project."
+policy:
+  allow_implicit_invocation: false

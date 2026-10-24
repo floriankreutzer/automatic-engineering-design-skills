@@ -5,13 +5,11 @@ description: Make a web app feel native on a phone — the small CSS and meta-ta
 
 # Feeling Native On Mobile
 
-## Initial Response
+## Scope and precedence
 
-When this skill is first invoked without a specific question, respond only with:
+Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources. Examples do not authorize unrelated changes or dependency installation. Work on the concrete task instead of stopping at a readiness message.
 
-> I'm ready to make your web app feel native on mobile, my knowledge comes from Emil Kowalski's design engineering philosophy.
-
-Do not provide any other information until the user asks a question.
+For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths. Apply mobile fixes to the affected component, and preserve ordinary browser behavior on marketing and content pages.
 
 A fix-it skill. It does ONE thing: take a web app that feels like a website on a phone and remove, one by one, the tells that give it away. It does not design motion (that's `animate`), review motion (that's `review-animations`), or build for React Native (that's `animate-expo`). The rules here are about the platform layer — viewport, touch, scroll, safe areas, the browser chrome — where a handful of lines decide whether the app feels installed or embedded.
 
@@ -23,7 +21,7 @@ The user's phone is the source of truth. If you can't run it on hardware, say wh
 
 Two failure modes, and the first is worse:
 
-1. **Fixing what the desktop shows you.** The bugs in this skill don't reproduce in Chrome's device emulation. If you only test there, you ship all of them.
+1. **Treating desktop emulation as complete mobile verification.** It can reveal layout defects but misses or approximates browser chrome, touch, keyboards, and device performance. State which behaviors remain unverified on a target device.
 2. **Reaching for JavaScript when CSS or a meta tag does it.** Almost every item here is one declaration. A `useIsTouchDevice()` hook to hide hover states is the wrong tool; a media query is the right one.
 
 ## Hard Rules
@@ -31,8 +29,8 @@ Two failure modes, and the first is worse:
 1. **Every fix ships with the reason.** Each rule below has a *why*. Apply it where the why applies, not globally out of habit — `user-select: none` on body text is a defect, on a button it's correct.
 2. **Media queries over device sniffing.** `(hover: hover)`, `(pointer: fine)`, `env()`, `dvh` — the platform tells you what it can do. Never branch on user agent strings or screen width to guess at touch.
 3. **Touch and mouse are not exclusive.** iPads with trackpads, laptops with touchscreens, phones with a mouse. Write for both at once; gate by capability, not by device.
-4. **Never disable zoom.** `user-scalable=no` and `maximum-scale=1` are accessibility failures. Fix the input font size instead, which is what was causing the zoom.
-5. **Test on hardware before calling it done.** Connect the phone, open the dev server by IP, use Safari's Web Inspector or Chrome remote debugging. Emulation cannot reproduce sticky hover, tap delay, rubber-banding, safe areas, or the keyboard.
+4. **Preserve browser zoom.** Do not use `user-scalable=no` or `maximum-scale=1`. Keep pinch zoom available on gesture surfaces too; `pan-x` or `pan-y` alone does not allow it. For unwanted focus zoom, check input font size instead.
+5. **Verify mobile-specific behavior on available target hardware.** Use a supported device or remote-debugging setup when available. If hardware is unavailable, complete the code and browser checks and identify the remaining device checks; do not claim those passed or assume access to USB, a workstation, or a network-exposed dev server.
 
 ## The Symptom Table
 
@@ -41,14 +39,14 @@ Start here. Match what the user is seeing, then read the matching section for th
 | Problem | Solution |
 | --- | --- |
 | Hover state stuck after tap | Wrap in `@media (hover: hover) and (pointer: fine)` |
-| Gray/blue flash on tap | Kill `-webkit-tap-highlight-color` |
+| Gray/blue flash conflicts with custom feedback | Replace it only on controls with visible press feedback |
 | Layout has wrong height | `100dvh` (app) or `100svh` (hero) |
 | Page zooms into input | Input font size 16px at the minimum |
 | Tap feels laggy | Feedback on pointer-down + `touch-action: manipulation` |
-| Pull-to-refresh hijacks scroll | `overscroll-behavior: none` on `html, body` |
+| Pull-to-refresh or scroll chaining disrupts an app | Contain the affected scroll region; opt into root suppression only for an app shell |
 | Content stops at the notch | `viewport-fit=cover` + `env(safe-area-inset-*)` |
 | Long-press selects button text | Add `user-select: none` |
-| Carousel scrolls vertically | `touch-action: pan-y` on the gesture surface |
+| Custom carousel gesture conflicts with page scroll | `touch-action: pan-y pinch-zoom` on the gesture surface |
 | Status bar color doesn't match | `theme-color` per color scheme |
 | Right in Chrome, wrong on phone | Test on real hardware |
 
@@ -67,21 +65,21 @@ Touch has no hover, so browsers fake one: the first tap on an element applies `:
 }
 ```
 
-Both conditions matter. `(hover: hover)` means the primary input can hover. `(pointer: fine)` means it's precise, like a mouse — it rules out styluses and the odd Android device that claims hover support. In Tailwind v4 the `hover:` variant already compiles to `@media (hover: hover)`; in v3 set `future.hoverOnlyWhenSupported`.
+Both conditions describe the primary input's capabilities. `(hover: hover)` means it can hover; `(pointer: fine)` means it is precise, such as a mouse or a suitable pen. Neither identifies a device type. In Tailwind v4 the `hover:` variant already compiles to `@media (hover: hover)`; check the installed version before changing framework configuration.
 
 Touch users still need press feedback. Give it to them through `:active` (see §5), which works on every input type.
 
 ### 2. Gray/blue flash on tap
 
-iOS Safari and Android Chrome paint a translucent highlight over any tapped element that has a click handler. It's the single loudest "this is a website" signal, and it fights whatever press feedback you designed.
+iOS Safari and Android Chrome can provide a native tap highlight. Keep it unless a custom control already has clear press feedback and a visible keyboard focus state. Replace it only where the two feedback treatments conflict:
 
 ```css
-html {
+.button-with-custom-feedback {
   -webkit-tap-highlight-color: transparent;
 }
 ```
 
-Set it once, globally. Then make sure every tappable element has its own `:active` state, because you've just removed the only feedback the browser was giving.
+Do not clear it globally by default. Verify the replacement on touch and keyboard input; ordinary content links can keep the browser's feedback.
 
 ### 3. Layout has the wrong height
 
@@ -129,7 +127,7 @@ button, a, [role="button"], .tappable {
 }
 ```
 
-**Feedback on release instead of press.** Native buttons respond the instant your finger lands. A web button that only changes on `click` responds when your finger *leaves*, which reads as lag even at 0ms. Style `:active`, and if you need JavaScript, listen to `pointerdown`, not `click`:
+**Feedback on release instead of press.** Show a pressed state as soon as the pointer lands, preferably with `:active`. Use `pointerdown` only for visual feedback if CSS is insufficient, and clear it on release or cancellation. Keep the actual action on the semantic `click` event so keyboard activation and cancel-by-dragging-away still work; do not submit, navigate, or delete on `pointerdown`.
 
 ```css
 .button {
@@ -141,19 +139,19 @@ button, a, [role="button"], .tappable {
 }
 ```
 
-Keep press feedback at 100–160ms and `ease-out`. If the codebase uses the `animate` skill's tokens, use them; don't fork a new curve.
+Use the project's press-feedback tokens; 100–160ms with `ease-out` is a starting point when none exist. Under reduced motion, keep a visible color or opacity change and omit the scale effect.
 
 ### 6. Pull-to-refresh hijacks scroll
 
-Scrolling past the top of the page triggers pull-to-refresh on Android Chrome and the whole-page rubber band on iOS. Fine on a document. Wrong in an app with its own scroll containers, a drawer the user drags down, or a canvas.
+Pull-to-refresh and scroll chaining can interfere with an app's own scroll containers or gestures. Preserve them on ordinary document pages. Start by containing the affected inner scroll region. Only if a full app shell needs to suppress root overscroll, opt in explicitly:
 
 ```css
-html, body {
+html[data-contained-app-shell] {
   overscroll-behavior: none;
 }
 ```
 
-Then, on any inner scrollable — a sheet's content, a chat list, a sidebar — stop scroll from chaining to the page when it hits the end:
+On an inner scrollable whose boundary should not move the page behind it, use:
 
 ```css
 .sheet-content {
@@ -162,7 +160,7 @@ Then, on any inner scrollable — a sheet's content, a chat list, a sidebar — 
 }
 ```
 
-`contain` keeps the container's own bounce (which feels native) but stops the page behind it from moving. Use `none` on the root, `contain` on children. Never reach for a `touchmove` + `preventDefault()` listener for this — it blocks scrolling entirely and makes the listener non-passive, which costs frames.
+`contain` prevents scroll chaining while allowing the container's local overscroll affordance where the browser provides one. Root suppression is an app-specific choice, not a global reset. Avoid a blanket `touchmove` + `preventDefault()` listener: it can block scrolling rather than just containing it.
 
 ### 7. Content stops at the notch
 
@@ -198,7 +196,7 @@ button, [role="button"], .tab, .chip, .drag-handle {
 }
 ```
 
-Never put `user-select: none` on `body`. Users copy addresses, error messages, and order numbers; that is content.
+Never put `user-select: none` on `body` or every `a`. Users copy addresses, error messages, order numbers, and linked text; that is content. Apply control-only styles to clearly identified controls.
 
 ### 9. Carousel scrolls vertically
 
@@ -206,17 +204,17 @@ A horizontal swipe on a carousel is ambiguous to the browser — it doesn't know
 
 ```css
 .carousel {
-  touch-action: pan-y; /* the carousel handles horizontal; the browser keeps vertical */
+  touch-action: pan-y pinch-zoom; /* custom horizontal drag; browser keeps vertical scroll and zoom */
 }
-.drag-surface {
-  touch-action: none;  /* a custom gesture (a drag-to-dismiss sheet, a slider) owns every axis */
+.two-axis-drag-handle {
+  touch-action: pinch-zoom; /* small custom drag handle; browser zoom remains available */
 }
 .vertical-sheet-handle {
-  touch-action: pan-x; /* the sheet handles vertical drags; horizontal stays with the browser */
+  touch-action: pan-x pinch-zoom; /* custom vertical drag; browser keeps horizontal scroll and zoom */
 }
 ```
 
-The values name what the *browser* may still do. `pan-y` on a horizontal carousel means "browser, you keep vertical panning; I'm handling horizontal". `none` means the element handles everything — use it only on elements that really do, or the user won't be able to scroll past them.
+The values name what the *browser* may still do. Keep `pinch-zoom` alongside the permitted pan axis; `pan-y` alone reserves browser behavior for vertical panning, and `none` suppresses viewport zoom as well as panning. Limit two-axis dragging to a small handle, leave surrounding content scrollable, and provide an accessible non-drag alternative. See the [Pointer Events touch-action rules](https://www.w3.org/TR/pointerevents3/#the-touch-action-css-property) and [pinch-zoom value](https://compat.spec.whatwg.org/#touch-action).
 
 If the carousel is native scroll rather than a JS gesture, prefer `scroll-snap-type: x mandatory` on the track and `scroll-snap-align: start` on slides — the browser's own physics beat a hand-rolled spring, and `touch-action` becomes unnecessary.
 
@@ -234,18 +232,18 @@ Match the value to the color at the very top of your page — the header backgro
 
 ### 11. Right in Chrome, wrong on phone
 
-Nothing above reproduces in device emulation. Sticky hover, the tap highlight, the URL bar's effect on `vh`, input zoom, the click delay, overscroll, safe areas, the software keyboard — every one is a real-hardware behavior.
+Device emulation is useful for layout checks but does not fully reproduce touch, browser chrome, input zoom, safe areas, or software-keyboard behavior. Verify the relevant cases on available target hardware.
 
-- Connect the phone over USB, run the dev server on `0.0.0.0`, open it by the machine's LAN IP.
+- Prefer an existing preview URL reachable from the phone. Use USB or local-network debugging only when that setup is available and appropriate; do not expose a dev server just to satisfy this checklist.
 - iOS: Safari → Develop → the device. Android: `chrome://inspect`.
 - Test on a phone that's a few years old, not the newest one on your desk. Test with the keyboard open. Test in landscape once.
 - Test as an installed PWA if that's a target; standalone mode changes viewport, safe areas, and status bar behavior.
 
-The Xcode Simulator is a step up from emulation but still misses touch feel. Real hardware is the bar.
+Simulators and emulation provide partial evidence. If no physical device is available, report that limit and the specific checks still needed without blocking the remaining implementation work.
 
 ## Baseline
 
-When starting a mobile-facing app, this is the floor. Ship it before the first component:
+Adapt this starting point to the app and its supported browsers. Preserve existing project tokens and browser behavior; do not paste it as an unconditional reset for a marketing page:
 
 ```html
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
@@ -255,16 +253,14 @@ When starting a mobile-facing app, this is the floor. Ship it before the first c
 
 ```css
 html {
-  -webkit-tap-highlight-color: transparent;
   -webkit-text-size-adjust: 100%; /* no font inflation in landscape */
-  overscroll-behavior: none;
 }
 
 input, textarea, select {
-  font-size: 16px;
+  font-size: max(1rem, 16px);
 }
 
-button, a, [role="button"] {
+button, [role="button"], .button {
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
@@ -275,7 +271,7 @@ button, a, [role="button"] {
 }
 ```
 
-`interactive-widget=resizes-content` makes the software keyboard shrink the layout viewport on Android Chrome, so `100dvh` and bottom-pinned inputs react to it the way they do on iOS. Drop `overscroll-behavior: none` from `html` if the app is a scrolling document where pull-to-refresh is welcome.
+`interactive-widget=resizes-content` requests layout-viewport resizing for the software keyboard in supporting browsers such as Android Chrome; check keyboard behavior on the supported platforms. Use `viewport-fit=cover` only with the safe-area handling in §7. Match theme colors to the actual supported themes. Root overscroll suppression and removal of native tap feedback are deliberate component or app-shell choices, not part of this baseline.
 
 ## Never Ship
 
@@ -287,14 +283,14 @@ Self-check before you finish.
 | Ungated `:hover` | `@media (hover: hover) and (pointer: fine)` |
 | `100vh` for an app shell or bottom-pinned UI | `100dvh` |
 | `100dvh` on a marketing hero | `100svh` (no layout shift on scroll) |
-| Press feedback on `click` only | `:active` / `pointerdown` |
+| Press feedback on `click` only | `:active` / `pointerdown` for feedback; semantic `click` for the action |
 | `touchmove` + `preventDefault()` to stop overscroll | `overscroll-behavior` |
-| `user-select: none` on `body` | Only on controls |
-| `touch-action: none` on something the user needs to scroll past | `pan-x` / `pan-y` |
+| `user-select: none` on `body` or all links | Only on identified controls |
+| Gesture styles that suppress page zoom or trap scrolling | Native scrolling, or the needed pan axis plus `pinch-zoom` |
 | `env(safe-area-inset-*)` without `viewport-fit=cover` | Add the meta tag or the value is `0` |
 | One `theme-color` for both schemes | One per `prefers-color-scheme` |
 | User-agent sniffing to detect touch | `(hover)` / `(pointer)` media queries |
-| Declaring it fixed from device emulation | Real hardware |
+| Claiming device verification from emulation alone | Target-device evidence, or clearly identified remaining checks |
 
 ## Output
 
@@ -302,7 +298,7 @@ Apply the fixes. Then, in at most a few lines:
 
 - **What was wrong** — the symptom matched from the table, and the one-line why.
 - **What changed** — file and declaration, one line each.
-- **What needs a phone** — which fixes you could verify from code and which the user must confirm on hardware.
+- **What needs a phone** — which fixes you verified from code or browser checks and which device behaviors remain unverified.
 
 Don't pad this into a report. The code is the deliverable.
 

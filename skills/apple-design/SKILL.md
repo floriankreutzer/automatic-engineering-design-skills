@@ -5,13 +5,11 @@ description: Apple's approach to interface design and fluid, physical motion, tr
 
 # Apple Design
 
-## Initial Response
+## Scope and precedence
 
-When this skill is first invoked without a specific question, respond only with:
+Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources. Examples do not authorize unrelated changes or dependency installation. Work on the concrete task instead of stopping at a readiness message.
 
-> I'm ready to help you build fluid, Apple-style interfaces on the web, my knowledge comes from Apple's WWDC design talks, translated for the web.
-
-Do not provide any other information until the user asks a question.
+For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths. Use the interaction principles here without imposing Apple fonts, translucent chrome, or extra animation on an existing brand. Prefer the project's current web primitives and animation tools.
 
 How Apple builds interfaces that stop feeling like a computer and start feeling like an extension of you. This knowledge comes from Apple's WWDC design talks — chiefly *Designing Fluid Interfaces* (WWDC 2018) — distilled and translated into the web platform (CSS, Pointer Events, `requestAnimationFrame`, spring libraries like Motion/Framer Motion).
 
@@ -29,7 +27,7 @@ Apple frames design as serving four human needs: **safety/predictability, unders
 
 The moment lag appears, the feeling of directness "falls off a cliff." Response is the foundation everything else is built on.
 
-- **Respond on pointer-down, not on release.** Highlight a button the instant it's pressed. Waiting for `click`/touch-up to show feedback feels dead.
+- **Show feedback on pointer-down; commit through the semantic action.** Highlight a button when it is pressed, preferably with `:active`. Keep activation on `click` so keyboard input and cancel-by-dragging-away work; do not submit, navigate, or delete on `pointerdown`.
 - **Be vigilant about every latency.** Audit debounces, artificial timers, transition waits, and the ~300ms tap delay. Anything on the input path that isn't essential is a regression.
 - **Feedback must be continuous *during* the interaction, not just at the end.** For a drag, slider, or drawer, update the UI 1:1 with the pointer the whole way through — never animate only when the gesture completes.
 
@@ -66,7 +64,7 @@ Every animation must be interruptible and redirectable at any moment. A user mus
 
 - **Never lock out input during a transition.**
 - **Always animate from the *presentation* (current) value, never the target value.** On interrupt, read the element's live on-screen transform and start the new animation from there. Starting from the logical/target value causes a visible jump.
-- **Avoid CSS transitions and `@keyframes` for anything gesture-driven** — they can't be smoothly grabbed and reversed mid-flight. Springs animate from the current value by default, which is exactly what interruption needs.
+- **Choose the simplest interruption model that fits.** CSS transitions can reverse simple state changes. For direct dragging and velocity-aware handoffs, use live values and an interruptible spring or animation API already available in the project. Verify interruption rather than assuming a library or animation type guarantees it.
 - **When a gesture reverses, blend velocity — don't hard-cut it.** Replacing one animation with another at a reversal creates a velocity discontinuity, a "brick wall." Spring libraries that carry velocity through a re-target avoid it. (This is what iOS's *additive animations* do natively; on the web, choose a spring library that re-targets from the current velocity.)
 - **Decompose 2D motion into independent X and Y springs.** A single spring on a 2D distance desyncs when X and Y have different velocities.
 
@@ -163,7 +161,7 @@ function rubberband(overshoot, dimension, constant = 0.55) {
 
 ## 10. Gesture design details (the "feel" checklist)
 
-- **Tap:** highlight on touch-*down* (instant), commit on touch-*up*. Add ~10px of hysteresis/hit padding around the target, and allow cancel-by-dragging-away and back.
+- **Tap:** highlight on press, commit through the native control's `click` activation. Preserve keyboard activation and cancellation; do not replace semantic button or link behavior with an unconditional touch-up handler.
 - **Drag/swipe:** require a small movement threshold (hysteresis, ~10px) before committing to a direction, then track 1:1.
 - **Detect all plausible gestures in parallel from the first move**, then confidently cancel the losers once intent is clear. Avoid recognizers that only report a *final* state (`swipeleft`-type events) — they throw away the continuous tracking you need for feedback.
 - **Minimize disambiguation delays.** Double-tap detection unavoidably delays single taps; only pay that cost where double-tap truly exists.
@@ -173,20 +171,22 @@ function rubberband(overshoot, dimension, constant = 0.55) {
 Smoothness is about *what's in the frames*, not just the frame rate.
 
 - Keep the per-frame positional change below the perception threshold to avoid strobing.
-- For very fast motion, a subtle **motion blur / stretch** encodes speed and reads better than a hard sharp streak.
-- `requestAnimationFrame` is the web's display-synced clock (Apple uses `CADisplayLink`). Animate only compositor-friendly properties — `transform` and `opacity` — and hint with `will-change` where motion is imminent.
+- First reduce excessive speed or travel. Use motion blur or stretch only when it serves the interaction, fits the brand, and has been measured on supported devices.
+- `requestAnimationFrame` is the web's display-synced clock (Apple uses `CADisplayLink`). Prefer `transform` and `opacity` for movement and fading; they can avoid layout work but are not cost-free. Use other properties only when the effect justifies their measured cost, and apply `will-change` selectively near an actual animation.
 
-## 12. Materials & depth — translucency conveys hierarchy
+## 12. Materials & depth — optional translucency
 
-Apple uses translucent materials as a floating functional layer that brings structure without stealing focus. On the web, approximate with `backdrop-filter`.
+Apple uses translucent materials to express floating layers. On the web, `backdrop-filter` can approximate that treatment when it fits the project's visual system and performance budget. Solid backgrounds and borders remain valid defaults; preserve Pavurel's existing materials and tokens.
 
-- **Build nav/toolbars/sheets as translucent layers** (`backdrop-filter: blur()` + a semi-transparent background) with content scrolling underneath — not opaque bars that consume a fixed strip.
+- **Choose materials for the task.** Use translucent nav/toolbars/sheets only where underlying context helps and text stays legible over every background. Keep opaque chrome when it better supports the brand, hierarchy, or performance.
 - **Material weight encodes hierarchy:** darker/heavier materials separate structural regions (sidebars); lighter materials draw attention to interactive elements (buttons). **Never stack a light translucent surface on another** — legibility collapses.
-- **Bigger surfaces should read as thicker:** stronger blur + a deeper shadow than small chips. Consider context-aware shadow — heavier over busy/text content for separation, lighter over plain backgrounds.
+- **Match depth to hierarchy.** Use the project's surface, border, and shadow tokens. Larger surfaces do not automatically require more blur; add only the separation needed over the actual background.
 - **Dim to focus, separate to keep flow.** A modal task pairs the surface with a dimming scrim and pushes the background back/down. A parallel, non-blocking panel uses translucency and offset *without* a scrim so the flow isn't broken. For stacked sheets, progressively dim and push back each parent layer.
 - **Vibrancy keeps text legible over changing backgrounds.** Over blurred/translucent surfaces, don't use flat gray text — use higher-contrast, slightly heavier weight, and a small letter-spacing bump. Put color on a solid layer, not the translucent foreground.
-- **Scroll edge effects, not hard dividers.** Instead of a 1px border under a sticky header, fade a small blur/gradient mask where content meets floating chrome — only where floating UI actually overlaps content.
-- **Materialize, don't just fade.** For glass/blur surfaces, animate blur radius and scale together on enter/exit, so the surface reads as a real material arriving rather than a plain opacity fade.
+- **Choose a clear scroll boundary.** A border, shadow, or restrained fade can separate a sticky header. Add a blur/gradient mask only where floating UI overlaps content and it improves clarity.
+- **Keep blur static by default.** For an approved translucent surface, prefer an opacity transition with any small transform allowed by the project's motion rules. Animate blur radius only after measuring a concrete benefit and cost; omit movement and blur animation for reduced motion.
+
+Example of an optional material, not a site-wide token override:
 
 ```css
 .toolbar {
@@ -201,7 +201,7 @@ Apple uses translucent materials as a floating functional layer that brings stru
 Three rules for combining senses (from *Designing Audio-Haptic Experiences*):
 
 1. **Causality** — it must be obvious what caused the feedback. Trigger it on the actual causal event (the toggle flipping, the item snapping home), and match its character to the action's physicality.
-2. **Harmony** — the visual, the sound, and the haptic must fire on the **same frame**. Latency between them destroys the illusion. Don't let a CSS transition lag the audio/haptic (Vibration API).
+2. **Harmony** — coordinate feedback around the same causal event and avoid perceptible delay. Browser sound and vibration support and scheduling vary; feature-detect, respect user settings, and provide complete visual feedback without assuming frame-perfect synchronization.
 3. **Utility** — add feedback only where it earns its place. Reserve haptics/sound for meaningful moments (success, error, commit, snap). Over-feedback trains users to ignore all of it.
 
 ## 14. Reduced motion & accessibility
@@ -214,9 +214,11 @@ Reduced motion doesn't mean *no* feedback — it means a gentler, non-vestibular
 
 Also: avoid full-viewport moving backgrounds, slow looping oscillations (near 0.2 Hz / one cycle per 5s), and abrupt brightness jumps (ease dark↔light theme changes). Make large moving objects semi-transparent while they travel, and fade big surfaces out during a large reposition and back in once settled.
 
+Keep layout transforms separate from animation-only wrappers; do not erase a transform needed to position a sheet. For an animation wrapper whose static state has no transform:
+
 ```css
 @media (prefers-reduced-motion: reduce) {
-  .sheet { transition: opacity 200ms ease; transform: none !important; }
+  .sheet-motion { transition: opacity 200ms ease; transform: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
   .toolbar { background: white; backdrop-filter: none; }
@@ -227,14 +229,14 @@ Also: avoid full-viewport moving backgrounds, slow looping oscillations (near 0.
 
 Apple designs type to change shape with size; the same discipline applies on the web. (From *The Details of UI Typography*, WWDC 2020.)
 
-- **Tracking (letter-spacing) is size-specific — never one value for all sizes.** Large display text wants *negative* tracking (letters read too far apart as they grow); small text wants slightly *positive* tracking for legibility. A fixed `letter-spacing` is wrong somewhere. Tighten headings, leave body near `0`.
+- **Tune tracking for the chosen font and size.** Keep established type tokens. If adjustment is needed, inspect actual text at supported sizes and languages; negative heading tracking or positive small-text tracking are options, not universal rules.
 - **Leading (line-height) tracks size inversely.** Tight on large headings, looser on body copy. Increase it for scripts with tall ascenders/descenders; tighten it for dense, information-heavy UI.
 - **Build hierarchy from weight + size + leading as a set,** not size alone. Emphasize with weight — it adds presence without taking more space.
 - **Respect the user's text-size setting** (Dynamic Type). Scale layout *with* the text — spacing in `rem`/`em`, not fixed px — so a larger font doesn't break the layout.
-- **Default to the platform's system font** before a custom face; it already ships optical sizing, tracking tables, and legibility tuning. Override only with a reason.
+- **Preserve the project's fonts and type tokens.** A system font is a reasonable fallback when no brand type system exists. Do not replace Pavurel's established fonts to imitate Apple's styling.
 
 ```css
-:root { font: 100%/1.5 system-ui, sans-serif; } /* body: system font, comfortable leading */
+.example-copy { font: 100%/1.5 var(--font-body, system-ui), sans-serif; } /* map to the project's body token */
 
 .display {
   font-size: clamp(2rem, 5vw, 4rem);
@@ -261,7 +263,7 @@ Tactical rules that serve these:
 
 - **Feedback comes in four kinds:** status, completion, warning, error. Confirm meaningful actions, expose ongoing status, warn before problems, validate inline (not on submit).
 - **Wayfinding.** Every screen should answer: Where am I? Where can I go? What's there? How do I get out? Never trap the user.
-- **Grouping & mapping.** Proximity implies relationship; place a control near what it affects and arrange controls to mirror what they change. If you need a label to explain a control, the mapping is weak.
+- **Grouping & mapping.** Proximity implies relationship; place a control near what it affects and arrange controls to mirror what they change. Keep clear visible labels and accessible names; spatial grouping complements them rather than replacing them.
 - **Direct, specific labels beat safe generic ones.** Name nav items for their contents ("Progress", "Library"), not vague umbrellas ("Home"). Specificity creates predictability.
 
 ## 17. Process
@@ -281,10 +283,10 @@ Tactical rules that serve these:
 | Interrupt cleanly | Start from presentation (live) value | read the on-screen transform |
 | Avoid reversal "brick wall" | Carry velocity through re-target | spring that blends velocity |
 | Reversible transition | Mirror the easing curve | inverse cubic-bézier |
-| Decide reverse vs. commit | Use velocity **sign**, not position | at release |
+| Decide reverse vs. commit | Combine position, velocity, and the intended action | use explicit thresholds; allow cancellation |
 | 1:1 drag | Pointer Events + capture | respect the grab offset |
-| Feedback | On pointer-down, continuous | never only at the end |
+| Feedback | On pointer-down, continuous | semantic `click` commits the action |
 | Boundary | Rubber-band, don't hard-stop | progressive resistance |
-| Translucent chrome | `backdrop-filter` layer | content scrolls under |
-| Type tracking | Size-specific, never fixed | tighten large text (`-0.02em`), body near `0` |
+| Translucent chrome | Optional `backdrop-filter` layer | retain solid surfaces when clearer or cheaper |
+| Type tracking | Project tokens, adjusted for the actual font | inspect supported sizes and languages |
 | Reduced motion | Cross-fade, not slide/spring | `@media (prefers-reduced-motion)` |

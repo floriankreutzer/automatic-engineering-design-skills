@@ -1,27 +1,31 @@
 ---
 name: pick-ui-library
-description: Pick the right library for a given frontend task from a curated, opinionated list — numbers, OTP inputs, charts, command menus, virtualization, drag and drop, toasts, state, styling, and more. Only runs when explicitly invoked; it does not trigger on its own.
-disable-model-invocation: true
+description: Decide whether a frontend task needs a dependency, then use a curated library shortlist when it fits the existing architecture. Prefer native HTML/CSS and installed components for simple work. Covers numbers, OTP inputs, charts, menus, virtualization, drag and drop, toasts, state, and styling. Only runs when explicitly invoked.
 ---
 
 # Picking The Right Library
 
+## Project contract
+
+Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources.
+
+For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths.
+
+Treat the list as candidates, not a requirement to install packages. Keep review-only requests read-only. Perform installation or integration only within authorized scope and project architecture rules; do not request the same approval again when it already exists.
+
 ## Initial Response
 
-When this skill is first invoked without a specific question, respond only with:
+Use the frontend task already present in the conversation. If none exists, ask what behavior is needed; otherwise begin without a readiness-only response.
 
-> I'm ready to pick the right library for your task, my picks come from Emil Kowalski's curated list.
-
-Do not provide any other information until the user asks a question.
-
-A lookup skill. When invoked with a task ("I need toasts", "what should I use for drag and drop?"), match the task to the curated list below and recommend the library. These are deliberate, taste-driven picks — don't substitute alternatives outside this list unless the user asks for one or the task genuinely isn't covered.
+A lookup skill. First decide whether the behavior needs a library. If it does, consider the curated list below alongside the existing stack and the user's explicit choice. The correct recommendation can be native HTML/CSS, an installed component, or a better-fitting alternative outside this list.
 
 ## How to use this
 
-1. **Identify the task**, not the library the user named. "I need to show a dropdown" is a UI-primitives task (base-ui), even if they asked about something else.
-2. **Check what's already installed.** Look at `package.json` first. If the project already uses a listed library, use it. If it uses a competitor (e.g. react-window instead of Virtuoso), flag the recommendation but don't churn the dependency without being asked.
-3. **Recommend one library**, state what it's for in one sentence, and install/wire it up if that's part of the request. Don't present a menu of options when the list has a clear answer.
-4. If the task isn't covered by the list, say so explicitly and recommend from your own knowledge — but be clear you've left the curated list.
+1. **Identify the actual behavior and constraints.** Respect a library the user explicitly selected; discuss a mismatch rather than silently replacing it. A simple dropdown may be a native `<select>`, while a command menu has different needs.
+2. **Inspect the architecture and existing dependencies.** Read project instructions, `package.json`, and the lockfile. Account for Astro versus React/Next, SSR/SSG, hydration, browser support, accessibility, and the client-JavaScript budget. Reuse compatible installed components; do not replace an existing dependency merely because it is absent from this list.
+3. **Try native HTML/CSS first for simple tasks.** Do not introduce React, another runtime, a theme provider, or an animation library just for marketing-page hover/fade effects. On Pavurel's Astro website, preserve its established architecture unless the user has authorized a justified change.
+4. **If a dependency is needed, verify its fit.** Use the installed version or current primary documentation for compatibility, maintenance, license, and API details. Explain the concrete benefit and added cost. Many candidates below are React/Next-specific and are not drop-in Astro components.
+5. **Recommend the simplest suitable approach.** Install and wire it only when that work is authorized; record package changes in the existing lockfile and verify the affected build. If no listed library fits, say so and choose an appropriate alternative rather than forcing the shortlist.
 
 ## The list
 
@@ -46,7 +50,7 @@ A lookup skill. When invoked with a task ("I need toasts", "what should I use fo
 | Dynamic OG images (HTML/CSS → SVG/PNG) | [Satori](https://github.com/vercel/satori) |
 | Syntax highlighting | [shiki](https://shiki.style) |
 
-Reach for motion when you need springs, layout animations, exit animations, or gesture-driven values. A simple hover or fade doesn't need it — plain CSS transitions are the right tool there.
+Consider motion for springs, layout transitions, exit animations, or gestures only when the existing stack and interaction justify it. A simple hover or fade uses CSS; respect reduced motion and the project's performance budget.
 
 ### Charts
 
@@ -55,7 +59,7 @@ Reach for motion when you need springs, layout animations, exit animations, or g
 | Real-time / streaming charts | [Liveline](https://github.com/benjitaylor/liveline) |
 | General charts (static or interactive dashboards) | [recharts](https://recharts.org) |
 
-The split: if data points arrive live and the chart scrolls with time, use Liveline. Everything else is recharts.
+For a compatible interactive app, consider Liveline for streaming data and Recharts for general charts. A static marketing comparison may be clearer as a table or native SVG and does not justify a React chart runtime on its own.
 
 ### Interaction & performance
 
@@ -77,9 +81,9 @@ The styling split: clsx for ad-hoc conditional classes; cva when a component has
 
 ## Common mismatches to catch
 
-- **Toasts built by hand or with a modal library** → Sonner exists for exactly this.
-- **A `<div>`-based dropdown/dialog with manual focus handling** → base-ui, which handles accessibility, focus trapping, and dismissal.
-- **Animating a number by re-rendering text** → NumberFlow handles digit transitions properly.
-- **Rendering a 1,000+ row list directly** → Virtuoso before reaching for pagination hacks.
-- **A `useState`-per-component web of props for shared state** → zustand.
-- **Template-literal className ternaries three conditions deep** → clsx (or cva if it's variant-shaped).
+- **Complex custom toast behavior in a React app** → consider Sonner; a simple persistent form result may only need accessible inline feedback.
+- **A `<div>`-based dropdown/dialog with manual focus handling** → consider a suitable native element, existing accessible component, or base-ui in a compatible React app.
+- **An interaction that genuinely needs animated digits** → consider NumberFlow if its runtime fits; do not animate numbers by default.
+- **A large list that is slow in measurement** → choose pagination or virtualization from the user's task and accessibility needs; consider Virtuoso in a compatible stack.
+- **Shared React state with a clear coordination problem** → consider the existing state solution or Zustand; avoid adding global state for local UI.
+- **Repeated conditional classes or component variants** → reuse existing helpers; consider clsx/cva when the complexity warrants a dependency.

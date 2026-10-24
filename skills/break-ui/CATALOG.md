@@ -2,7 +2,7 @@
 
 Realistic values that break UI, grouped by what kind of value the component renders. Use the rows that apply to the fields in your Phase 1 table. Each value is something a real user could produce; the note says what it tends to break.
 
-Use `example.com`, `example.org`, or `.test` domains for emails and URLs, so the fixture never points at a real inbox or site.
+Use synthetic records with `example.com`, `example.org`, or `.test` domains for emails and URLs. Keep submissions mocked; fixtures must never send messages or service requests. Do not copy live customer or guest records into previews.
 
 ---
 
@@ -34,9 +34,9 @@ Unbreakable strings: they have no spaces, so the browser has nowhere to wrap the
 | Value | Breaks |
 | --- | --- |
 | `bartholomew.fitzgerald@northwind-industries-holdings.example.com` | The classic. Pushes every sibling off the row without `overflow-wrap: anywhere` |
-| `a@b.co` | Shortest realistic; layout that assumed a long email looks empty |
+| `a@b.test` | Short local part and domain; layout that assumed a long email looks empty |
 | `first.last+billing-notifications@example.com` | Plus-addressing; validation that rejects `+`, display that truncates the meaningful part |
-| `ops@sub.department.region.example.co.uk` | Many subdomains, two-part TLD; "domain" extraction logic |
+| `ops@sub.department.region.example.test` | Many subdomains; "domain" extraction logic |
 | `https://example.com/workspaces/acme/projects/q3-launch/docs/9f8e7d6c5b4a?tab=comments&filter=unresolved` | Long URL; overflow, and end-truncation hides the part that differs |
 | `9f8e7d6c-5b4a-4c3d-8e2f-1a0b9c8d7e6f` | UUID; monospace width, middle-truncation candidate |
 | `Q3 Board Deck — FINAL (revised) v12 [approved by legal].pdf` | File name; end-truncation hides the version and extension, brackets and dashes in paths |

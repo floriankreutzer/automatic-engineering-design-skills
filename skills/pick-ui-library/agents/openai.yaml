@@ -1,0 +1,7 @@
+interface:
+  display_name: "Choose UI Libraries"
+  short_description: "Choose native UI or libraries that fit the project"
+  default_prompt: "Use $pick-ui-library to choose the simplest suitable approach for this UI task, starting with native HTML/CSS and existing dependencies."
+
+policy:
+  allow_implicit_invocation: false

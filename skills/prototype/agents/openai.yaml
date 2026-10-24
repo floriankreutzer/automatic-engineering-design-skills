@@ -1,0 +1,7 @@
+interface:
+  display_name: "Prototype Variants"
+  short_description: "Compare focused UI variants in an isolated preview"
+  default_prompt: "Use $prototype to explore three distinct UI variants in an isolated preview using the project brand and architecture."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pavurel App Design"
+  short_description: "Apply repository standards to Customer and Platform UI"
+  default_prompt: "Use $pavurel-app-design to review this Customer or Platform workflow against its current repository standards."

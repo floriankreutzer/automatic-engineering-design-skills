@@ -5,15 +5,17 @@ description: Guide to Sonner, the React toast library — install and wire up th
 
 # Working With Sonner
 
+## Project contract
+
+Follow host instructions, the user's request and existing authorization, and project conventions before this skill's defaults. For Pavurel marketing website work, load the installed `pavurel-web-design` skill by name through the host's skill mechanism; its brand, Astro, accessibility, content, and release rules apply. Do not assume sibling skills are installed at relative paths.
+
+Use this skill for an existing or explicitly chosen Sonner integration. Do not introduce React, a new runtime, or a toast dependency just to decorate a static marketing page. Keep reviews read-only; carry out already authorized changes without a redundant approval step.
+
 ## Initial Response
 
-When this skill is first invoked without a specific question, respond only with:
+Use the Sonner task already present in the conversation. If none exists, ask which behavior needs help; otherwise begin without a readiness-only response.
 
-> I'm ready to help you set up, style, and troubleshoot Sonner, my knowledge comes from its author, Emil Kowalski.
-
-Do not provide any other information until the user asks a question.
-
-A guide skill for [Sonner](https://sonner.emilkowal.ski), the toast library. When a task involves Sonner — wiring it up, rendering toasts, styling them, or fixing them — answer from this file first. Full prop tables for `<Toaster />` and `toast()` live in [API.md](API.md); read it when you need an exact prop name, type, or default.
+A guide skill for [Sonner](https://sonner.emilkowal.ski), the React toast library. Check the installed version in the project and lockfile first. The installed package's exported types and implementation, followed by matching official documentation, take precedence over this guide. Use [API.md](API.md) as a summary with a recorded source revision, not as a guarantee for every Sonner version. Do not upgrade the package merely to make an example fit.
 
 ## Setup
 
@@ -62,12 +64,12 @@ Climb only as far as the change requires; jumping to the top rung too early is f
 
 1. **Defaults** — plus `richColors` on the Toaster for colorful success/error, `invert` to flip against the theme.
 2. **Inline tweaks** — `toastOptions={{ style: {…} }}` on the Toaster for all toasts, or `style` per `toast()` call.
-3. **Classes on parts** — `toastOptions={{ classNames: { toast, title, description, actionButton, cancelButton, closeButton } }}`. Sonner's injected styles win the cascade, so every class needs `!important` (Tailwind: `!text-red-900`). If you're marking more than a few things important, stop — go headless.
+3. **Classes on parts** — `toastOptions={{ classNames: { toast, title, description, actionButton, cancelButton, closeButton } }}`. Inspect the installed version's CSS and computed styles before increasing specificity. Use a targeted override only where needed; do not add `!important` to every class by default. Consider `unstyled` or headless rendering when many defaults need replacing.
 4. **Headless** — `toast.custom()` with your own JSX, keeping Sonner's positioning, stacking, and swipe. The recommended approach for a design-system toast: wrap it in your own `toast()` abstraction. (`unstyled: true` exists as a halfway house, but headless gives more control for the same effort.)
 
 **Icons** — swap defaults per-type with the Toaster's `icons` prop, per-toast with `icon`, remove with `null`.
 
-**Theme** — `theme` defaults to `'light'` and does not track the OS. Pass `theme="system"`, or wire your theme provider: `<Toaster theme={resolvedTheme} />` from `next-themes`.
+**Theme** — `theme` defaults to `'light'` and does not track the OS. Pass `theme="system"`, or wire the project's existing compatible theme provider. Use `next-themes` only if it already fits the architecture; do not install it solely for this example.
 
 ## Troubleshooting
 
@@ -75,7 +77,7 @@ Climb only as far as the change requires; jumping to the top rung too early is f
 | --- | --- |
 | Toast never appears | No `<Toaster />` mounted, or it unmounted (conditional render, per-page placement). Mount one at the root. If calling from a server action: `toast()` is client-only — call it with the action's result on the client. |
 | Same toast appears twice | Two Toasters mounted (layout **and** page) — keep one. Or `toast()` fired in an effect under React StrictMode's dev double-invoke — fire from the event handler instead, or pass a stable `id` so the second call updates rather than duplicates. |
-| Tailwind/CSS classes have no effect | Default styles override them. Mark them `!important`, or use `unstyled` / headless (see the ladder above). |
+| Tailwind/CSS classes have no effect | Inspect computed styles and the installed stylesheet; use a targeted override or `unstyled` / headless when appropriate (see the ladder above). |
 | Toasts render completely unstyled (common in Astro, view transitions) | Sonner's injected stylesheet was lost — import it explicitly in a layout: `import 'sonner/dist/styles.css'`. |
 | Unstyled inside Shadow DOM | Styles land in `document.head`, not the shadow root. Copy the style tag whose text includes `[data-sonner-toaster]` into the shadow root. |
 | Toast behind a modal/overlay, or clipped | An ancestor creates a stacking context (`transform`, `filter`, `overflow`) or the overlay out-z-indexes the toaster. Move `<Toaster />` to the document root, outside any dialog/portal container. |

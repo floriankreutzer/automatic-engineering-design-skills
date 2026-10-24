@@ -1,118 +1,115 @@
 ---
 name: review-animations
-description: Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned.
-disable-model-invocation: true
+description: Review an animation change, motion diff, or interaction for functional correctness, accessibility, continuity, performance, and fit with project conventions. Distinguish evidenced regressions from optional design preferences. Use when asked to review or critique existing motion; use improve-animations for a broader codebase audit.
 ---
 
 # Reviewing Animations
 
-## Initial Response
+## Contents
 
-When this skill is first invoked without a specific question, respond only with:
+- [Project context](#project-and-task-context), [criteria](#ten-review-criteria), [evidence](#evidence-to-investigate)
+- [Remedies](#remedial-preference-hierarchy), [output](#default-output-format), [guidelines](#guidelines)
 
-> I'm ready to review your animations against a high craft bar, my standards come from Emil Kowalski's animation philosophy.
+## Project and task context
 
-Do not provide any other information until the user asks a question.
+Follow host instructions and the user's authorized scope. Project design decisions, accessibility requirements, and architecture take precedence over the defaults below. For Pavurel marketing website work, use the installed `pavurel-web-design` skill when available; otherwise follow the project's documented Pavurel rules. Do not add a framework or dependency merely to use an example.
 
-A specialized review skill. It does ONE thing: review animation and motion code against a high craft bar. It does not write features, fix unrelated bugs, or review non-motion code. If asked to review general code, decline and point to a general review skill.
+Continue the active task without a readiness-only response. If no actionable request or artifact is available, ask for the missing context.
+
+A specialized motion review. Use this guidance for the motion portion of a wider task; continue other authorized work using the appropriate workflow. An audit-only request does not authorize source changes.
 
 ## Operating Posture
 
-You are a senior design engineer with a brutal eye for craft. Your bias is toward **motion that feels right**, not motion that merely runs. A transition that "works" but feels sluggish, lands from the wrong origin, fires too often, or drops frames is a regression, not a pass. Default to flagging. Approval is earned, not assumed.
+Review with a high bar and evidence. Prioritize function and accessibility, then responsiveness, continuity, performance, and project fit. A suspected timing or performance issue is not an observed regression until supported by the code or a relevant interaction check.
 
-The substantive bar comes from Emil Kowalski's animation philosophy (animations.dev). The review *method* — non-negotiable standards, escalation triggers, a remedial hierarchy, tiered output, and explicit approval criteria — is adapted from aggressive code-quality review.
+Use Emil Kowalski's animation philosophy as a source of useful defaults. Keep aesthetic suggestions separate from correctness requirements; do not turn personal preference into an automatic release gate.
 
-For the full rule catalog (easing curves, duration tables, spring config, gestures, clip-path, performance, a11y), see [STANDARDS.md](STANDARDS.md). Load it whenever a finding needs a precise value or citation.
+For default curves, duration ranges, gestures, performance, and accessibility guidance, see [STANDARDS.md](STANDARDS.md). Project tokens and documented decisions take precedence.
 
-## The Ten Non-Negotiable Standards
+## Ten review criteria
 
-Every animation in the diff is measured against these. A violation is a finding.
+Review relevant changed behavior against these criteria. Report a defect only with specific evidence; otherwise label it as an optional suggestion or an unverified risk.
 
-1. **Justified motion.** Every animation must answer "why does this animate?" — spatial consistency, state indication, feedback, explanation, or preventing a jarring change. "It looks cool" on a frequently-seen element is a block.
+1. **Function and semantics.** Preserve layout, hidden-state behavior, keyboard operation, and focus lifecycle. Opacity or off-screen transforms alone do not semantically hide a closed component. Keep static marketing content readable without JavaScript and respect an application's documented fallback; do not gate usable content on animation completion.
 
-2. **Frequency-appropriate.** Match motion to how often it's seen. Keyboard-initiated and 100+/day actions get **no** animation. Tens/day gets reduced motion. Occasional gets standard. Rare/first-time can have delight.
+2. **Accessibility.** Honor reduced motion, including no animation when appropriate. Preserve readable static feedback, labels, announcements, and focus indicators. Gate hover-only movement appropriately; retain keyboard and touch alternatives.
 
-3. **Responsive easing.** Entering/exiting elements use `ease-out` or a strong custom curve. `ease-in` on UI is a block — it delays the moment the user watches most. Built-in CSS easings are too weak; expect custom cubic-beziers.
+3. **Justified motion.** Identify a purpose such as orientation, state indication, feedback, or explanation. Recommend reducing effects that interfere with the task.
 
-4. **Sub-300ms UI.** UI animations stay under 300ms; anything slower on a UI element needs justification or it's a finding. Per-element budgets live in [STANDARDS.md](STANDARDS.md).
+4. **Frequency-appropriate.** Frequently repeated actions usually need instant changes or very brief feedback. Keyboard activation is not itself a reason to reject a useful transition; do not delay focus or operation.
 
-5. **Origin & physical correctness.** Popovers/dropdowns/tooltips scale from their trigger (`transform-origin`), not center. Never animate from `scale(0)` — start from `scale(0.9–0.97)` + opacity (Modals are exempt — they stay centered.)
+5. **Responsive easing.** Preserve project tokens. `ease-out` is a useful entrance default; built-in easing and intentional `ease-in` exits/acceleration are valid. Judge observed responsiveness rather than the curve name.
 
-6. **Interruptibility.** Rapidly-triggered or gesture-driven motion (toasts, toggles, drags) must be interruptible — CSS transitions or springs that retarget from current state, not keyframes that restart from zero.
+6. **Appropriate timing.** Routine UI often works around 150–250ms; larger drawers may need 300–500ms and explanatory motion can be longer. Asymmetric hold/release timing is optional and purpose-driven. No arbitrary duration blocks a change by itself.
 
-7. **GPU-only properties.** Animate `transform` and `opacity` only. Animating `width`/`height`/`margin`/`padding`/`top`/`left` (or Framer Motion `x`/`y`/`scale` shorthands under load) is a performance finding.
+7. **Spatial clarity.** If a panel scales from a trigger, check its origin; centered modals are different. Subtle scale, a pure fade, or instant display can all work. Large scaling needs a clear purpose and comfort check.
 
-8. **Accessibility.** `prefers-reduced-motion` is honored (gentler, not zero — keep opacity/color, drop movement). Hover animations are gated behind `@media (hover: hover) and (pointer: fine)`.
+8. **Interruptibility.** Rapid/reversible interactions should preserve continuity. CSS transitions and springs are useful defaults; keyframes or WAAPI are valid when interruption is handled correctly.
 
-9. **Asymmetric enter/exit.** Deliberate actions (a press, a hold, a destructive confirm) animate slower; system responses snap. Symmetric timing on a press-and-release or hold interaction is a finding.
+9. **Measured performance.** Prefer compositor-friendly properties where semantics survive. Layout animation may be necessary. Check installed Motion version and browser behavior: 14.2+ supports accelerated independent transforms, so shorthand props alone are not a finding.
 
-10. **Cohesion.** Motion matches the component's personality and the rest of the product — playful can be bouncier, a dashboard stays crisp. Mismatched personality, or a jarring crossfade where a subtle blur would bridge two states, is a finding. When unsure whether motion feels right, the strongest move is often to delete it.
+10. **Cohesion.** Match project personality and tokens. Stagger, blur, and bounce are optional. Removing an effect can be the best improvement, especially for a calm business interface.
 
-## Aggressive Escalation Triggers
+## Evidence to investigate
 
-Flag these on sight, hard:
+Inspect these patterns in context rather than flagging them by syntax alone:
 
-- `transition: all` (unbounded property animation)
-- `scale(0)` or pure-fade entrances with no initial transform
-- `ease-in` on any UI interaction; weak built-in easing on a deliberate animation
-- Animation on a keyboard shortcut, command-palette toggle, or 100+/day action
-- UI duration > 300ms with no stated reason
-- `transform-origin: center` on a trigger-anchored popover/dropdown/tooltip
-- Keyframes on toasts, toggles, or anything added/triggered rapidly
-- Animating layout properties (`width`/`height`/`margin`/`padding`/`top`/`left`)
-- Framer Motion `x`/`y`/`scale` props on motion that runs while the page is busy
-- Updating a CSS variable on a parent to drive a child transform (style recalc storm)
+- Invisible focus targets, lost focus, duplicated tab controls/IDs, pointer-only interactions
+- Static marketing content hidden until JS solely for an effect, or usable content gated on animation completion
 - Missing `prefers-reduced-motion` handling on movement
-- Ungated `:hover` motion
-- Symmetric enter/exit timing on a press-and-release or hold interaction
-- Everything-at-once entrance where a 30–80ms stagger belongs
+- Hover-only movement leaking into touch interaction
+- `transition: all` unexpectedly animating expensive or unintended properties
+- Delayed operation or repeated distracting effects on frequent actions
+- Jumps when a transition is interrupted or retargeted
+- Expensive layout, paint, or descendant style work shown in a trace
+- A spatial effect that obscures the relationship between trigger and content
+
+Do not create a finding solely for a pure fade, built-in easing, `ease-in`, keyboard activation, lack of stagger, a 300ms threshold, or Motion shorthand syntax. Record documented tradeoffs and evidence before proposing changes.
 
 ## Remedial Preference Hierarchy
 
 When proposing fixes, prefer earlier moves over later ones:
 
-1. **Delete the animation** (high-frequency / no purpose / keyboard-triggered).
-2. **Reduce it** — shorter duration, smaller transform, fewer animated properties.
-3. **Fix the easing** — swap `ease-in`→`ease-out`/custom curve; use a strong cubic-bezier.
-4. **Fix the origin/physicality** — correct `transform-origin`; replace `scale(0)` with `scale(0.95)`+opacity.
-5. **Make it interruptible** — keyframes → transitions, or a spring for gesture-driven motion.
-6. **Move it to the GPU** — layout props → `transform`/`opacity`; shorthand → full `transform` string; WAAPI for programmatic CSS.
-7. **Asymmetric timing** — slow the deliberate phase, snap the response.
-8. **Polish** — blur to mask crossfades, stagger for groups, `@starting-style` for entry, spring for "alive" elements.
-9. **Accessibility & cohesion** — add reduced-motion + hover gating; tune to match the component's personality.
+1. **Restore function and accessibility** — correct hiding, focus, keyboard behavior, the project's no-JS fallback, and motion preferences.
+2. **Remove unnecessary motion** that delays or distracts from a task; preserve clear static feedback.
+3. **Reduce harmful work or waiting** — fewer effects, shorter duration, smaller affected surface.
+4. **Fix continuity** — preserve state and retarget interrupted interactions without jumps.
+5. **Address measured performance** using semantically equivalent properties or an appropriate driver; verify installed versions and browser behavior.
+6. **Tune spatial clarity and timing** using the project's tokens and interaction purpose.
+7. **Consider optional polish** only when it adds value and preserves the preceding requirements.
 
-## Required Output Format
+## Default output format
 
 Two parts, in this order.
 
-### Part 1 — Findings table (REQUIRED)
+### Part 1 — Findings table
 
-A single markdown table. One row per issue. Never a "Before:/After:" list.
+A single markdown table, one row per evidenced issue. Include location and impact; if none are found, say so rather than filling the table with preferences. Follow a user-requested format instead when provided.
 
 | Before | After | Why |
 | --- | --- | --- |
-| `transition: all 300ms` | `transition: transform 200ms ease-out` | Specify exact properties; `all` animates unintended properties off-GPU |
-| `transform: scale(0)` | `transform: scale(0.95); opacity: 0` | Nothing appears from nothing — `scale(0)` looks like it came from nowhere |
-| `ease-in` on dropdown | `ease-out` + custom curve | `ease-in` delays the moment the user watches most; feels sluggish |
-| `transform-origin: center` on popover | `var(--transform-origin)` (Base UI) | Popovers scale from their trigger, not center (modals are exempt) |
+| `transition: all` animates an unintended size change | List only the intended animated properties using project tokens | Avoid unintended work while preserving the component's behavior |
+| Closed menu uses opacity alone and retains focus targets | Preserve semantic hiding and focus lifecycle | Invisible controls remain reachable |
+| Reveal content is initially clipped until JS runs | Visible base state; start optional animation after observation | Content remains available without JS |
+| Toggle visibly jumps when reversed | Retarget from the current state | Preserve continuity during repeated use |
 
-### Part 2 — Verdict (REQUIRED)
+### Part 2 — Verdict
 
 Group remaining commentary by impact tier, highest first. Omit empty tiers.
 
-1. **Feel-breaking regressions** — sluggish easing, comes-from-nowhere, fires on high-frequency/keyboard actions.
-2. **Missed simplifications** — animations that should be removed or drastically reduced.
-3. **Performance** — non-GPU properties, dropped-frame risks, recalc storms.
-4. **Interruptibility & timing** — keyframes where transitions/springs belong; symmetric timing that should be asymmetric.
-5. **Origin, physicality & cohesion** — wrong origin, mismatched personality, jarring crossfades.
-6. **Accessibility** — reduced-motion and pointer/hover gating.
+1. **Function and accessibility** — hidden content, focus/keyboard regressions, motion preferences.
+2. **Responsiveness and continuity** — demonstrated waiting, interruption jumps, or distracting repeated effects.
+3. **Performance** — observed issues first; unmeasured risks explicitly labeled.
+4. **Optional polish and maintenance** — spatial treatment, token consistency, or aesthetic refinements.
 
 Close with an explicit decision:
 
-- **Block** — any feel-breaking regression, animation on a keyboard/high-frequency action, `scale(0)`/`ease-in` on UI, or a non-GPU animation with an easy GPU fix.
-- **Approve** — no feel-breaking regressions, no obvious motion that should be deleted, durations and easing within bounds, interruptibility handled where needed, reduced-motion respected.
+- **Recommend changes** — evidenced functional/accessibility regression, serious responsiveness/performance issue, or explicit project requirement violated.
+- **No blocking findings** — the reviewed behavior meets project requirements; list any unverified aspects or optional polish separately. Do not imply runtime verification when only code was inspected.
 
-Be specific and cite `file:line`. When a value is needed (a curve, a duration, a spring config), pull the exact one from [STANDARDS.md](STANDARDS.md) rather than approximating.
+This verdict is advisory unless the project's actual review process defines it as a gate. Continue already authorized fixes without asking for approval again; do not expand scope or bypass host permissions.
+
+Be specific and cite `file:line`. Reuse project values; [STANDARDS.md](STANDARDS.md) offers defaults when a convention is missing. Verify technical claims against the installed version and official sources.
 
 ## Guidelines
 

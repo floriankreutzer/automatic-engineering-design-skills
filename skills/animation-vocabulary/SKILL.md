@@ -5,13 +5,16 @@ description: Reverse-lookup glossary that turns a vague description of a web ani
 
 # Animation Vocabulary
 
-## Initial Response
+## Contents
 
-When this skill is first invoked without a specific question, respond only with:
+- [Project context](#project-and-task-context), [quick start](#quick-start), [instructions](#instructions), [examples](#examples)
+- [Glossary](#glossary), [performance terms](#performance--what-keeps-motion-smooth-instead-of-stuttering), [principles](#principles-to-know--concepts-that-guide-when-and-how-to-animate)
 
-> I'm ready to put a name to any motion effect you describe, my knowledge comes from Emil Kowalski's animation philosophy.
+## Project and task context
 
-Do not provide any other information until the user asks a question.
+Follow host instructions and the user's authorized scope. Project design decisions, accessibility requirements, and architecture take precedence over examples here. For Pavurel marketing website work, use the installed `pavurel-web-design` skill when available; otherwise follow the project's documented Pavurel rules. Naming an effect is not a recommendation to add it.
+
+Continue the active task without a readiness-only response. If the effect is unspecified, ask for a description or example.
 
 Turn a vague description of a motion or effect into the precise term, so the user knows what to ask for.
 
@@ -28,10 +31,10 @@ If several terms could fit, list the best match first, then 1–2 alternates wit
 ## Instructions
 
 1. **Read for intent, not keywords.** Users describe what they *see* or *feel* ("springy", "slides off", "draws itself in"), not the technical name. Map the sensation to the glossary below.
-2. **Quote the glossary verbatim.** Its descriptions are authoritative — use them as-is, don't paraphrase.
+2. **Use the glossary as a starting point.** Explain in the user's language and distinguish a common term from a project-specific label. Verify version-sensitive implementation claims against current official documentation.
 3. **Disambiguate close terms.** When two compete (*Clip-path* vs *Mask*, *Pop in* vs *Bounce*, *Shared element transition* vs *Layout animation*), contrast them so the user can pick.
 4. **When nothing matches exactly,** name the closest term and say plainly it's an approximation, or describe the effect in the glossary's vocabulary (e.g. "that's a *stagger* of *scale-in* entrances").
-5. **Stay within this glossary.** If a term genuinely isn't here, say so rather than inventing one — though you may explain the concept using these words.
+5. **Do not invent established terminology.** If the glossary has no precise match, say so. Use a verified term from outside it or a clearly labeled descriptive phrase when that is more useful.
 6. **Keep it tight.** A naming question wants a name, not an essay. Lead with the term; expand only if asked.
 
 ## Examples
@@ -63,7 +66,7 @@ Output:
 
 ## Glossary
 
-_A curated snapshot mirroring the project's `/vocabulary` page; keep the two in sync when either changes._
+_A curated reference. Sync a project's own glossary only when it exists and updating it is in scope; do not assume a `/vocabulary` page exists._
 
 ### Entrances & Exits — how elements appear and disappear
 - **Fade in / Fade out** — Element appears or disappears by changing opacity.
@@ -111,7 +114,7 @@ _A curated snapshot mirroring the project's `/vocabulary` page; keep the two in 
 
 ### Feedback & Interaction — responding to the user's actions
 - **Hover effect** — Visual change when the cursor moves over an element.
-- **Press / Tap feedback** — A subtle scale-down when an element is clicked, so it feels physical.
+- **Press / Tap feedback** — A visible response to activation, such as a color change or a subtle scale-down; it need not involve motion.
 - **Hold to confirm** — A progress effect that fills up while the user holds a button.
 - **Drag** — Moving an element by grabbing it, often with momentum when released.
 - **Drag to reorder** — Dragging items in a list to rearrange them, while the others shift to make room.
@@ -122,10 +125,10 @@ _A curated snapshot mirroring the project's `/vocabulary` page; keep the two in 
 
 ### Easing — how speed changes over an animation
 - **Easing** — The rate at which an animation speeds up or slows down.
-- **Ease-out** — Starts fast, ends slow. The default for most UI and anything responding to the user.
-- **Ease-in** — Starts slow, ends fast. Usually avoided; can feel sluggish.
+- **Ease-out** — Starts fast, ends slow. A common default for entrances and immediate feedback.
+- **Ease-in** — Starts slow, ends fast. Useful for intentional acceleration or some exits; a slow onset may make immediate feedback feel delayed.
 - **Ease-in-out** — Slow, fast, slow. Good for elements already on screen moving from A to B.
-- **Linear** — Constant speed. Avoid for UI; reserve for spinners or marquees.
+- **Linear** — Constant speed. Useful for constant-rate motion and progress indicators; choose based on purpose.
 - **Cubic-bezier** — A custom easing curve you define for precise control.
 - **Asymmetric easing** — A curve that accelerates and decelerates at different rates. Feels more alive than a symmetric one.
 
@@ -165,9 +168,9 @@ _A curated snapshot mirroring the project's `/vocabulary` page; keep the two in 
 - **Frame rate (FPS)** — Frames drawn per second. 60fps is the baseline for smooth motion; 120fps on newer displays.
 - **Jank** — Visible stutter when the browser drops frames because it can't keep up with the animation.
 - **Dropped frame** — A frame the browser missed its deadline to draw, causing a tiny hitch in motion.
-- **Compositing** — Letting the GPU move or fade an element on its own layer without redoing layout or paint.
+- **Compositing** — Combining rendered layers into the final frame; eligible layer changes can avoid repeating layout and paint.
 - **will-change** — A CSS hint that an element is about to animate, so the browser can promote it to its own layer ahead of time.
-- **Layout thrashing** — Animating properties like width, height, top, or left that force the browser to recalculate layout every frame, causing jank.
+- **Layout thrashing** — Repeatedly alternating layout-affecting writes with geometry reads, forcing synchronous layout work in quick succession. A layout animation is not automatically layout thrashing; see [web.dev's explanation](https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing).
 
 ### Principles to Know — concepts that guide when and how to animate
 - **Purposeful animation** — Motion should serve a function — orient, give feedback, show relationships — not just decorate.
@@ -177,5 +180,5 @@ _A curated snapshot mirroring the project's `/vocabulary` page; keep the two in 
 - **Perceived performance** — The right animation makes an interface feel faster, even when it isn't.
 - **Frequency of use** — The more often a user sees an animation, the shorter and subtler it should be.
 - **Spatial consistency** — Animating so an element keeps its identity and position across states, so users never lose track of where things went.
-- **Hardware acceleration** — Animating transform and opacity lets the GPU keep motion smooth.
+- **Hardware acceleration** — Running eligible animation work on the compositor rather than the main JavaScript thread; eligibility depends on the browser, property, and API/version.
 - **Reduced motion** — Respecting the user's prefers-reduced-motion setting by toning down or removing motion.

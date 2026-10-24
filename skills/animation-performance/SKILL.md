@@ -5,13 +5,16 @@ description: Keep web animations inside the frame budget — animate composite-o
 
 # Animation Performance
 
-## Initial Response
+## Contents
 
-When this skill is first invoked without a specific question, respond only with:
+- [Symptoms](#the-symptom-table), [frame budget](#the-frame-budget), [property cost](#what-you-animate), [execution path](#where-it-runs)
+- [React updates](#react-dont-animate-through-state), [style/blur traps](#two-traps-that-look-correct), [will-change](#will-change), [workflow](#workflow)
 
-> I'm ready to find out why your animation drops frames and make it smooth, my knowledge comes from Emil Kowalski's design engineering philosophy.
+## Project and task context
 
-Do not provide any other information until the user asks a question.
+Follow host instructions and the user's authorized scope. Project design decisions, accessibility requirements, and architecture take precedence over the defaults below. For Pavurel marketing website work, use the installed `pavurel-web-design` skill when available; otherwise follow the project's documented Pavurel rules. Do not add a framework or dependency merely to use an example.
+
+Continue the active task without a readiness-only response. If no actionable request or artifact is available, ask for the missing context.
 
 A diagnostic skill. It does ONE thing: make motion land every frame. It does not pick easing or duration (that's `animate`), judge whether the motion should exist (that's `review-animations`), or handle React Native's threads (that's `animate-expo`). The question here is never "does it look right?" but "does each frame finish in time?".
 
@@ -21,7 +24,7 @@ Imagine [Sonner](https://sonner.emilkowal.ski/) running at 30fps. Same easing, s
 
 ## Operating Posture
 
-You are a design engineer who has shipped drawers, toasts, and dashboards to real devices and has had each of the traps below bite in production. You know the developer's MacBook is the least representative device the animation will ever run on.
+Diagnose from evidence on representative devices. A fast development machine can conceal performance problems experienced by the project's users.
 
 Two failure modes, and the first is worse:
 
@@ -30,10 +33,10 @@ Two failure modes, and the first is worse:
 
 ## Hard Rules
 
-1. **`transform` and `opacity` by default.** Anything else needs a reason. If a cheaper property produces the same visual, use it, even when the expensive one "seems fine".
+1. **`transform` and `opacity` by default when behavior is preserved.** An optimization must retain layout, visibility, focus, and accessible semantics, not merely resemble a screenshot.
 2. **Name the cause before changing code.** Every fix you propose names which of the causes below it addresses. "Added `will-change`, seems smoother" is not a diagnosis.
 3. **Never conclude "it's fine" from a fast machine.** Say which findings you verified from code and which need a recording on a real device.
-4. **Never `transition: all`.** List the exact properties. `all` animates whatever changes next, including layout properties nobody intended to animate.
+4. **Prefer explicit transition properties.** `all` can animate future state changes unintentionally. Identify the actual unwanted work before assigning severity.
 5. **Don't trade correctness for a best-effort optimization.** Hardware acceleration is something the browser may grant. Which properties you animate is something you control. Spend effort on the second.
 
 ## The Symptom Table
@@ -42,19 +45,19 @@ Start here. Match what the user is seeing, then read the matching section.
 
 | Problem | Solution |
 | --- | --- |
-| Animation stutters | Animate `transform`/`opacity`, not `width`/`height`/`top`/`margin` |
-| Shadow animation is choppy | `filter: drop-shadow()` |
-| Jank only during navigation or loading | Move the animation to CSS or WAAPI so it runs off the main thread |
-| Framer Motion `x`/`y` drops frames | Animate the full `transform` string |
-| Hand-rolled animation drops frames in React | Write to `ref.current.style`, not state |
-| Drag gets laggier as the list grows | Stop animating an inherited CSS variable; set `transform` directly |
-| Blur transition lags (especially Safari) | Keep animated `blur()` under 20px |
+| Animation stutters | Trace layout/paint/composite cost; consider `transform`/`opacity` if semantics survive |
+| Shadow animation is choppy | Test a smaller/static shadow or `filter: drop-shadow()` if its shape is appropriate |
+| Jank only during navigation or loading | Inspect long tasks and eligibility for CSS/WAAPI acceleration |
+| Motion `x`/`y` drops frames | Check installed version and trace; 14.2+ supports accelerated independent transforms |
+| Hand-rolled animation drops frames in React | Avoid unnecessary per-frame renders; use an owned ref or motion value |
+| Drag gets laggier as the list grows | Check inherited-variable invalidation; prefer a local transform when equivalent |
+| Blur transition lags | Reduce radius/surface area or remove it; no radius is universally safe |
 | Unexpected properties animate | Replace `transition: all` with explicit properties |
 | Element shifts 1px when motion starts or ends | `will-change: transform`, only once you see it |
 
 ## The Frame Budget
 
-60fps is what the brain reads as fluid motion and matches most refresh rates. It gives the browser **16.7ms** (1000/60) per frame. On a 120Hz screen, now most phones and many laptops, it's **8ms**. Design against the smaller number.
+At 60Hz, one frame takes **16.7ms** (1000/60). At 120Hz it takes **8.3ms**. Browser work shares that budget; validate against the project's supported devices and refresh rates.
 
 For scale: a layout recalculation on a complex page can take over 100ms. That isn't one missed frame, it's a dozen.
 
@@ -71,68 +74,69 @@ To show a visual change, the browser runs up to three steps:
 - **Paint**: draw the page into layers.
 - **Composite**: put those layers on screen.
 
-Every property enters this pipeline at one of three points, and the cost differs by an order of magnitude:
+Use these rough cost tiers, then verify the affected elements and browser:
 
 | Tier | Properties | Cost |
 | --- | --- | --- |
-| Composite only | `transform`, `opacity`, and in current Chrome/Firefox also `filter`, `clip-path`, `background-color` | Cheapest. Browsers promote these to their own layer. |
+| Usually compositor-friendly | `transform`, `opacity`; other properties such as `filter`, `clip-path`, `background-color` depend on browser and effect | Often cheapest; promotion and acceleration are not guaranteed. |
 | Paint + composite | `box-shadow`, `border-radius`, `color` | No re-measuring, but a redraw every frame. |
 | Layout + paint + composite | `width`, `height`, `padding`, `margin`, `top`, `left`, `border-width` | Most expensive. One growing element can move everything around it. |
 
 `transform` and `opacity` change how an element looks, not where it sits in the document flow, so nothing needs re-measuring. Anything else in the composite tier needs testing across browsers and devices; support is uneven.
 
-**Swapping down a tier:**
+**Possible substitutions, after checking behavior:**
 
 | Instead of | Animate |
 | --- | --- |
-| `width` / `height` / `padding` to grow or shrink | `scale()` |
-| `top` / `left` / `margin` to move | `translate()` (percentages are relative to the element's own size) |
-| `display` / `visibility` swaps | `opacity` |
-| `box-shadow` | `filter: drop-shadow(…)` |
+| Decorative growth that need not reflow content | `scale()`; it scales children/text and retains the original layout slot |
+| Visual movement without repositioning surrounding content | `translate()`; percentages refer to the element's own size |
+| Entry/exit around a semantic hidden/visible change | Animate `opacity` while preserving the component's hiding and focus lifecycle |
+| Shadow effect whose shape can follow the rendered alpha outline | Test `filter: drop-shadow(…)`; it is not identical to `box-shadow` |
 
-The last one is the one people miss. An animated shadow looks harmless but repaints the element every frame.
+`opacity: 0` alone still allows focus and pointer interaction and does not hide content from assistive technology. Retain suitable `hidden`, `display`, `visibility`, or inert/unmount behavior and focus management. See [MDN opacity](https://developer.mozilla.org/en-US/docs/Web/CSS/opacity). Do not replace semantic hiding with transparency.
 
 Two things follow:
 
-- **Layout animations don't always drop frames.** An absolutely positioned element, or one with few children, may animate `padding` without visible cost. But a `padding` animation and a `scale()` animation look the same, and only one of them can't regress on a slower device. Pick the one with no downside.
-- **Layout properties also move the wrong things.** Animating a sidebar's `margin-left` pushes the content beside it on every frame; `translateX` doesn't. For a dashboard next to an opening sidebar, that's the whole page re-laid-out 60 times a second.
+- **Layout animations don't always drop frames.** A small isolated layout change may fit the budget. Padding changes internal space; scale changes the rendered content, so they are not interchangeable. Keep required layout behavior and measure the cost.
+- **Choose overlay versus reflow deliberately.** A sidebar that pushes content and a translated overlay solve different problems. An accordion usually needs real layout expansion; preserve that behavior and reduce the affected work rather than substituting a transform blindly.
 
 ## Where It Runs
 
-**JavaScript always runs on the main thread.** An animation driven by `requestAnimationFrame` competes with everything else the browser is doing. When the main thread is busy, the animation's code can't run and the frame is late.
+**DOM animation driven by main-window `requestAnimationFrame` shares the main thread.** Busy scripts can delay its next update. JavaScript can also hand eligible animation work to the browser through WAAPI; do not infer the execution path solely from a library name.
 
 | Driver | Thread |
 | --- | --- |
-| JS + `requestAnimationFrame` (GSAP, `motion/react` components) | Main thread, always |
-| Web Animations API (`element.animate()`, Motion's `animate()`) | Can be hardware-accelerated |
+| Main-window JS + `requestAnimationFrame` | Updates run on the main thread |
+| Motion `motion/react` / `animate()` | Hybrid path; installed version, value, and animation determine eligibility |
+| Web Animations API (`element.animate()`) | Can be hardware-accelerated |
 | CSS transitions and keyframes | Can be hardware-accelerated |
 
-Hardware acceleration means the animation runs off the main thread, so it stays smooth no matter what JavaScript is doing. "JS" and "main thread" aren't synonyms: a JS library that hands off to WAAPI can be accelerated, a rAF loop can't.
+An accelerated animation can continue while the main JS thread is busy. Rendering/GPU work can still exceed the budget; acceleration is not a guarantee that every frame is smooth.
 
-Reliably accelerated: `transform` and `opacity`. Gaining support: `filter`, `clip-path`, `background-color`.
+`transform` and `opacity` have broad compositor support. Check the target browsers for other effects, including `filter`, `clip-path`, and `background-color`.
 
-**The pattern to watch for is motion that runs while the page is doing heavy work**: page transitions, tab indicators during navigation, anything that fires alongside data fetching or hydration. Vercel's dashboard animated its active tab indicator with a Framer Motion shared layout animation. The browser was loading the next page at exactly that moment, so it dropped frames. Moving it to a CSS animation fixed it.
+**Watch motion that runs while the page does heavy work:** page transitions, tab indicators during navigation, or effects alongside hydration. Record whether a long task blocks animation updates before changing the driver.
 
-Framer Motion can be accelerated, but only when the transform is a string:
+**Check the installed Motion version.** Motion 14.2.0 (13 October 2026) added hardware-accelerated independent transforms. Current React documentation supports both forms:
 
 ```jsx
-<motion.div animate={{ x: 100 }} />                          // main thread, can jank
-<motion.div animate={{ transform: "translateX(100px)" }} />  // hardware-accelerated
+<motion.div animate={{ x: 100 }} /> // eligible in current Motion
+<motion.div animate={{ transform: "translateX(100px)" }} /> // also eligible
 ```
 
-The `x`, `y`, `scale`, `rotate` shorthands are implemented with CSS variables, and animated CSS variables aren't accelerated. The shorthands read better, so keep them by default and switch to the string form when the animation has to survive a busy main thread.
+Consult the [Motion changelog](https://motion.dev/changelog), [React transforms](https://motion.dev/docs/react-animation#transforms), and [performance guide](https://motion.dev/docs/performance). Older versions differ; preserve the installed API unless a trace and version-specific documentation support a change. Do not classify all shorthands as animated CSS variables or assume a full transform string is always faster.
 
 **Acceleration is progressive enhancement.** Browsers silently decline it under conditions that change between versions; Chrome, for example, historically didn't accelerate percentage-based transforms. That's not a reason to stop using `translateY(100%)`. Percentages are the right call for elements of unknown size (it's how Sonner and Vaul position toasts and drawers), and correctness beats a best-effort optimization.
 
 ## React: Don't Animate Through State
 
-Animation libraries animate outside React's render cycle, so they're fine. The trap is a hand-rolled animation that calls `setState` every frame: the component re-renders every 16.7ms and the render alone blows the budget.
+Avoid unnecessary per-frame React state updates: repeated renders can consume the frame budget. An owned DOM ref or motion value can reduce that work. Preserve React's ownership of other styles and keep meaningful application state in React; neither approach guarantees smoothness without profiling.
 
 ```jsx
-// Drops frames: one re-render per frame
+// May add unnecessary rendering work on every frame
 setY(nextY);
 
-// Smooth: no re-render
+// Updates this visual property without a React render
 ref.current.style.transform = `translateY(${nextY}px)`;
 // or with a motion value: y.set(nextY)
 ```
@@ -141,25 +145,25 @@ Look for state updates inside `requestAnimationFrame`, `pointermove`, `scroll`, 
 
 ## Two Traps That Look Correct
 
-Both of these use `transform` and still drop frames.
+Cheap animated properties can still accompany expensive work.
 
-**Inherited CSS variables.** Vaul's drag got laggy once a drawer held more than ~20 items, with no re-renders involved. The drag distance was written to a CSS variable that `translateY()` read:
+**Inherited CSS variables.** A per-frame variable on a large ancestor can increase style work as descendant content grows:
 
 ```js
-// Recalculates styles for every descendant, every frame
+// Can invalidate descendant styles when inherited
 const style = { "--swipe-amount": `${draggedDistance}px` };
 
 // Only touches this element
 const style = { transform: `translateY(${draggedDistance}px)` };
 ```
 
-CSS variables inherit, so changing one on a parent triggers style recalculation for every child. The more content, the slower each frame. Suspect this whenever a `transform` animation degrades as content grows. It's the same reason Framer Motion's shorthands aren't accelerated.
+Unregistered custom properties inherit by default; invalidation depends on dependencies and browser optimizations. Profile style recalculation before rewriting the styling system. Local updates or a suitably registered non-inheriting property may help, but do not change inheritance when descendants need the value. Do not extrapolate this pattern to every Motion shorthand or version.
 
-**Blur.** `filter: blur()` gets expensive fast, especially in Safari. Keep animated blur under 20px; 2–5px is enough to soften a crossfade.
+**Blur.** Cost depends on radius, surface area, browser, and device. A small 2–5px blur may soften a decorative crossfade, but no fixed radius is universally safe. Preserve text legibility and prefer a simpler effect if profiling shows a problem.
 
 ## `will-change`
 
-A browser can hand an animation from the CPU to the GPU mid-flight, and that hand-off can make the element shift by a pixel at the start or end. `will-change` promotes the element up front so no hand-off happens:
+A layer/pixel-rendering change can cause a visible shift at animation boundaries. `will-change` is a hint that may let the browser prepare; it does not guarantee a layer or fix every shift:
 
 ```css
 .drawer {
@@ -173,9 +177,9 @@ Where it earns its place is an expensive paint, like a large blurred or filtered
 
 ## Should You Avoid JS Animation?
 
-No. Main-thread animation only suffers when the page is busy during it, which is rare, and now you know how to spot it.
+No. Judge the work per frame, the execution path, and concurrent load. Do not assume all JavaScript animation is slow or all CSS animation is accelerated.
 
-Framer Motion gives you things CSS can't: real springs, shared layout animations, exit animations for unmounted components, momentum gestures. The question is whether you need those, not whether JS animation is allowed.
+Motion provides convenient springs, shared layout transitions, exit handling, and momentum gestures. Use it when those capabilities serve the task and the architecture supports it; keep native CSS/WAAPI for simpler cases.
 
 **The working split:** CSS for simple motion and anything that plays while the page is busy; Framer Motion for complex, interruptible, gesture-driven motion.
 
@@ -191,19 +195,19 @@ List every animation in scope with its driver and properties:
 | Drawer | CSS transition | `transform` | user drag |
 | Card hover | CSS transition | `all` | hover |
 
-Expand `transition: all` and Motion shorthands into what they actually animate.
+Inspect `transition: all` and the installed Motion version to determine what actually animates. Record hiding/focus/layout requirements before proposing substitutions.
 
 ### Phase 2: Diagnose
 
 Work down this list. It's ordered by how often each one is the cause:
 
 1. **Which properties animate?** Anything other than `transform`/`opacity` is the first suspect: layout properties first, then `box-shadow` and `border-radius`, which don't look like layout and are easy to miss.
-2. **Does the jank coincide with the page being busy?** Navigation, fetching, hydration, a long task. Move the animation to CSS or WAAPI.
+2. **Does the jank coincide with the page being busy?** Navigation, fetching, hydration, a long task. Confirm whether CSS/WAAPI or the installed library can run the affected work off-thread.
 3. **Is React re-rendering per frame?** State updates in rAF, pointer, or scroll handlers.
 4. **Does it get worse as content grows?** An inherited CSS variable, or too many nodes animating at once.
-5. **Is a CSS variable animated at all?** Directly, or through Motion's `x`/`y`/`scale`.
-6. **Any animated `blur()` above 20px?**
-7. **Still shifting or stuttering?** Now add `will-change: transform` to the animating element.
+5. **Is an inherited CSS variable updated every frame?** Inspect invalidation in the trace; do not assume a Motion shorthand uses this path.
+6. **Does blur or another effect repaint a large area?** Reduce radius/surface area or simplify the effect.
+7. **Still shifting or stuttering due to layer setup?** Test a scoped `will-change` hint and retain it only if it helps.
 
 Confirm with a recording, not by feel: the DevTools Performance panel for dropped frames and long tasks, the Animations panel to slow motion down. Profile on a real mid-range phone over remote debugging. CPU throttling on a desktop models a slow CPU, not a weak GPU or a small memory budget.
 
@@ -215,8 +219,8 @@ For each finding:
 **[Element]**: `file.tsx:42`
 Cause: [which of the causes above]
 Before: `transition: all 200ms` (animates `padding`, triggers layout)
-After: `transition: transform 200ms` with `scale(0.97)`
+After: animate only the properties required by the component; preserve layout and hiding semantics
 Verified: from code / needs a device recording
 ```
 
-Order findings by cost: layout before paint, busy-main-thread before idle. Then stop. Apply fixes when asked.
+Prioritize functional/accessibility regressions first, then measured performance impact. Distinguish a code-level risk from observed dropped frames. For an audit-only request, report findings; if fixes are already authorized, apply and verify the scoped changes without asking again.

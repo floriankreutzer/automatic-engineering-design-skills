@@ -1,6 +1,6 @@
 # Sonner API Reference
 
-Exact props, types, and defaults. Options passed to `toast()` override the same options set via the Toaster's `toastOptions`.
+A compact reference, not a substitute for the installed version's types. Check the project's lockfile, exported TypeScript definitions, and matching official documentation before using a prop or default. Corrected type ownership below was checked against [Sonner source revision `8e4662b`](https://github.com/emilkowalski/sonner/blob/8e4662b39255120b62138312058f5d77c0139a5e/src/types.ts); that source revision is not a requirement to install or upgrade Sonner. Options passed to `toast()` override matching supported options set via the Toaster's `toastOptions`.
 
 ## `<Toaster />`
 
@@ -17,15 +17,16 @@ Exact props, types, and defaults. Options passed to `toast()` override the same 
 | `mobileOffset` | `string \| number \| object` | `'16px'` | Offset when screen width < 600px. |
 | `swipeDirections` | `array` | based on position | Allowed swipe-to-dismiss directions. |
 | `dir` | `string` | `'ltr'` | Text directionality. |
-| `hotkey` | `string` | `⌥/alt + T` | Keyboard shortcut that focuses the toaster area. |
+| `hotkey` | `string[]` | `['altKey', 'KeyT']` | Keyboard shortcut that focuses the toaster area; pass an array, not a display label. |
+| `containerAriaLabel` | `string` | `'Notifications'` | ARIA label for the toast container; set on `<Toaster />`, not `toast()`. |
 | `invert` | `boolean` | `false` | Dark toasts in light mode and vice versa. |
-| `toastOptions` | `object` | – | Default options applied to every toast (any `toast()` option below). |
+| `toastOptions` | `ToastOptions` | – | Shared toast defaults; use the installed `ToastOptions` type, which is narrower than all `toast()` options. |
 | `gap` | `number` | `14` | Gap between toasts when expanded. |
 | `icons` | `object` | – | Replace default icons: `{ success, info, warning, error, loading }`; `null` removes one. |
 
 ## `toast()` options
 
-`toast(message, options)` — message is a string, JSX, or a function returning JSX. Returns the toast's id.
+`toast(message, options)` — message is a string, JSX, or a function returning JSX. Returns the toast's id (`string` or `number` in the checked source).
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -40,15 +41,14 @@ Exact props, types, and defaults. Options passed to `toast()` override the same 
 | `cancel` | `ReactNode \| { label, onClick }` | – | Secondary button; clicking closes the toast. |
 | `actionButtonStyle` | `object` | `{}` | Styles for the action button. |
 | `cancelButtonStyle` | `object` | `{}` | Styles for the cancel button. |
-| `id` | `string` | – | Custom id; calling `toast()` again with the same id updates the existing toast. |
+| `id` | `string \| number` | – | Custom id; calling `toast()` again with the same id updates the existing toast. |
 | `testId` | `string` | – | Rendered as `data-testid` for e2e tests. |
 | `toasterId` | `string` | – | Id of the toaster to render this toast in. |
 | `style` | `object` | – | Inline styles for the toast. |
-| `classNames` | `object` | – | Classes per part: `{ toast, title, description, actionButton, cancelButton, closeButton }`. Needs `!important` unless `unstyled`. |
+| `classNames` | `object` | – | Classes per part: `{ toast, title, description, actionButton, cancelButton, closeButton }`. Check computed styles before adding targeted specificity overrides. |
 | `unstyled` | `boolean` | `false` | Removes all default styles. |
 | `onDismiss` | `(toast) => void` | – | Fires when the close button is clicked or the toast is swiped away. |
 | `onAutoClose` | `(toast) => void` | – | Fires when the toast closes automatically after `duration`. |
-| `containerAriaLabel` | `string` | `'Notifications'` | ARIA label for the toast container. |
 
 ## Functions
 

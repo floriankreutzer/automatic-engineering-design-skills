@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pavurel Web Design"
+  short_description: "Marke, Sales-Inhalte und robuste Astro-Websites"
+  default_prompt: "Nutze $pavurel-web-design, um diese Pavurel-Seite auf verständliche Inhalte, klare Handlungsaufforderungen und robuste Bedienung zu prüfen."

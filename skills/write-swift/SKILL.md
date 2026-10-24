@@ -5,17 +5,15 @@ description: How to write modern Swift well — modeling with value types, Swift
 
 # Write Swift
 
-## Initial Response
+## Scope and precedence
 
-When this skill is first invoked without a specific question, respond only with:
+Follow host instructions and tool restrictions, then the user's task and applicable project guidance. These recommendations are defaults; project architecture, accessibility, and compatibility requirements take precedence. Examples do not authorize unrelated changes or dependency installation. Work on the concrete task instead of stopping at a readiness message.
 
-> I'm ready to help you write modern Swift, the way the language wants to be written.
-
-Do not provide any other information until the user asks a question.
+Use this skill for an actual Swift project, separately from Pavurel's current Astro website and Conference Manager web work. Do not introduce Swift or native tooling for those tasks. For Pavurel marketing website work, use the installed `pavurel-web-design` skill when available, otherwise the project's instructions. Check the project's compiler, language mode, platform SDKs, and concurrency settings before adopting a feature below.
 
 How to write Swift the way the language wants to be written, current through Swift 6.4.
 
-**Toolchain baseline: Swift 6.3** (current release as of August 2026). Everything here compiles on 6.3 unless marked ⚠, which flags unreleased Swift 6.4 features. Concurrency guidance assumes the Swift 6.2 model — if the project is on 6.1 or earlier, §3's rules about `async` and `@concurrent` do not apply.
+**Guide baseline: Swift 6.3** (as of August 2026); ⚠ marks guidance for Swift 6.4 features that was unreleased at that baseline. These examples are not a compilation guarantee: verify current release status, feature availability, and the project's toolchain. Concurrency guidance assumes the Swift 6.2 model and the settings described in §3 — do not apply its `async` and `@concurrent` guidance to older or differently configured projects without checking those differences.
 
 The through-line: **Swift is a progressive-disclosure language. Start with the simplest, most static, most single-threaded thing that works, and buy dynamism — concurrency, reference semantics, existentials, unsafe pointers — only where you can point at the reason.** Every rule below is an application of that.
 
@@ -216,7 +214,7 @@ Clarity at the point of use is the goal that outranks every other one here.
 
 - **No type prefixes in Swift-only APIs.** Modules disambiguate. Keep prefixes only where the API mirrors an Objective-C one. But avoid very general names from specific frameworks — they read badly out of context and force manual disambiguation.
 - **Drop leading `get`** from async alternatives and from anything that returns its result directly. `persistentPosts`, not `getPersistentPosts`.
-- **Access control is documentation.** `private` (file), `internal` (module, and the default), `package`, `public`. Being explicit at the boundary is what forces the sendability and API-evolution decisions above.
+- **Access control is documentation.** `private` limits access to the enclosing declaration and its extensions in the same file; `fileprivate` allows access throughout that file. `internal` is module-wide and the default; `package` and `public` expose wider boundaries. Be explicit at those boundaries to make sendability and API-evolution decisions clear. See [Swift access control](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/accesscontrol/).
 - **Design the model so illegal states can't be spelled.** Private setters plus a validating mutating method; enums for closed sets; a strongly typed `UUID` instead of a `String`.
 - **Property wrappers** factor out an _access policy_ (`@Argument`, `@Published`, defensive copying, lazy, thread-local) so the declaration site states the policy in one word. Combine with `@dynamicMemberLookup` on a key path to project through a wrapper (that's how `$binding.title` works).
 - **Result builders** for declarative DSLs. **Macros** when the boilerplate is code the compiler could have written (§12).
@@ -323,7 +321,7 @@ Reach for a macro when you're writing code the compiler could derive — and onl
 
 Agents routinely write the older, longer form of all of these.
 
-**Rows marked ⚠ are Swift 6.4, which has not shipped.** The current release is 6.3.x. Their proposals are accepted and implemented in main, so they are safe to plan around and unsafe to write today — check the project's toolchain before using one, and prefer the older form if it targets 6.3 or earlier.
+**Rows marked ⚠ describe Swift 6.4 features that were unreleased at this guide's August 2026 baseline.** Check the current proposal status and the project's actual toolchain before using them; prefer an available form for older targets. A proposal or development-branch implementation does not guarantee availability in a released compiler.
 
 | Instead of                                                            | Write                                                                                                    | Since |
 | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ----- |

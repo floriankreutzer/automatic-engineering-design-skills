@@ -312,7 +312,7 @@ Configure the native stack. Never rebuild a screen transition in JS: the native 
 
 ```jsx
 <Stack screenOptions={{ animation: reduced ? 'fade' : 'default' }}>
-  <Stack.Screen name="settings" options={{ animation: 'slide_from_right', animationMatchesGesture: true }} />
+  <Stack.Screen name="settings" options={{ animation: reduced ? 'fade' : 'slide_from_right', animationMatchesGesture: true }} />
   <Stack.Screen name="compose" options={{ presentation: 'modal' }} />
   <Stack.Screen name="filter" options={{
     presentation: 'formSheet',
@@ -330,7 +330,7 @@ Configure the native stack. Never rebuild a screen transition in JS: the native 
 | Between tabs | `animation: 'none'` |
 | Reduced motion | `animation: 'fade'` |
 
-`animationMatchesGesture: true` makes the iOS back swipe run your transition in reverse under the finger, instead of the default push. Set it whenever you set a custom `animation`, or dragging back looks like a different app than pushing forward.
+Screen-specific `options` override `screenOptions`; keep the reduced-motion branch in every individual animation override. Check supported modal presentations and the back gesture on each target platform. `animationMatchesGesture: true` lets supported iOS custom transitions follow the back swipe; use it only where supported by the installed navigation versions and presentation.
 
 `formSheet` is native on both platforms, but not the same on both — the [Expo modal docs](https://docs.expo.dev/router/advanced/modals/#form-sheet-presentation) have the full list:
 

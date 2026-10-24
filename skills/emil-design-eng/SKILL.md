@@ -1,19 +1,17 @@
 ---
 name: emil-design-eng
-description: This skill encodes Emil Kowalski's philosophy on UI polish, component design, animation decisions, and the invisible details that make software feel great.
+description: Apply Emil Kowalski's interaction craft to UI reviews, component polish and motion decisions within the current project's brand, accessibility and architecture. Use for a specific interface or design-engineering task; treat timing and style preferences as contextual defaults, preserve semantic behavior, and diagnose performance against installed versions.
 ---
 
 # Design Engineering
 
-## Initial Response
+## Task and project context
 
-When this skill is first invoked without a specific question, respond only with:
+Follow host/tool instructions, the user's task and authorization, and applicable project instructions before these defaults. Inspect existing design tokens, components, accessibility requirements and architecture. For Pavurel website work, load the installed `pavurel-web-design` skill by name when available; otherwise use the project's current design and content documents. Do not assume sibling skill packages exist after selective installation.
 
-> I'm ready to help you build interfaces that feel right, my knowledge comes from Emil Kowalski's design engineering philosophy.
+Treat a review request as read-only. Complete authorized implementation work without a readiness-only response or a redundant approval stop. Clarify only a material unresolved decision. Examples do not authorize a dependency installation, publication or unrelated redesign.
 
-Do not provide any other information until the user asks a question.
-
-You are a design engineer with the craft sensibility. You build interfaces where every detail compounds into something that feels right. You understand that in a world where everyone's software is good enough, taste is the differentiator.
+Preserve content, semantics and keyboard/focus behavior before visual polish. Keep content visible without JavaScript and allow fully static reduced-motion behavior. Use existing native HTML/CSS capabilities before adding a runtime.
 
 ## Core Philosophy
 
@@ -35,29 +33,17 @@ Every decision below exists because the aggregate of invisible correctness creat
 
 People select tools based on the overall experience, not just functionality. Good defaults and good animations are real differentiators. Beauty is underutilized in software. Use it as leverage to stand out.
 
-## Review Format (Required)
+## Review format
 
-When reviewing UI code, you MUST use a markdown table with Before/After columns. Do NOT use a list with "Before:" and "After:" on separate lines. Always output an actual markdown table like this:
+Lead with functional and accessibility findings, then measured performance issues and contextual design suggestions. Include a source location, user impact, proposed change and how it was checked. Distinguish observation from inference; respect the user's requested format.
+
+Use a Before / After / Why table when it makes concrete comparisons clearer:
 
 | Before | After | Why |
 | --- | --- | --- |
-| `transition: all 300ms` | `transition: transform 200ms ease-out` | Specify exact properties; avoid `all` |
-| `transform: scale(0)` | `transform: scale(0.95); opacity: 0` | Nothing in the real world appears from nothing |
-| `ease-in` on dropdown | `ease-out` with custom curve | `ease-in` feels sluggish; `ease-out` gives instant feedback |
-| No `:active` state on button | `transform: scale(0.97)` on `:active` | Buttons must feel responsive to press |
-| `transform-origin: center` on popover | `transform-origin: var(--transform-origin)` | Popovers should scale from their trigger (not modals — modals stay centered) |
-
-Wrong format (never do this):
-
-```
-Before: transition: all 300ms
-After: transition: transform 200ms ease-out
-────────────────────────────
-Before: scale(0)
-After: scale(0.95)
-```
-
-Correct format: A single markdown table with | Before | After | Why | columns, one row per issue found. The "Why" column briefly explains the reasoning.
+| `transition: all` | Explicit transition properties | Avoid animating unrelated changes. |
+| Hidden controls still focusable | Correct hidden state and focus handling | Visibility and operability must agree. |
+| An effect delays frequent input | Immediate feedback, shorter or no motion | Preserve the user's pace. |
 
 ## The Animation Decision Framework
 
@@ -69,14 +55,12 @@ Before writing any animation code, answer these questions in order:
 
 | Frequency                                                   | Decision                     |
 | ----------------------------------------------------------- | ---------------------------- |
-| 100+ times/day (keyboard shortcuts, command palette toggle) | No animation. Ever.          |
-| Tens of times/day (hover effects, list navigation)          | Remove or drastically reduce |
-| Occasional (modals, drawers, toasts)                        | Standard animation           |
+| Very frequent (keyboard shortcuts, command palette toggle) | Prefer immediate updates; justify any transition |
+| Frequent (hover effects, list navigation)                  | Keep feedback immediate and brief |
+| Occasional (modals, drawers, toasts)                        | Animate only a useful state or spatial change |
 | Rare/first-time (onboarding, feedback forms, celebrations)  | Can add delight              |
 
-**Never animate keyboard-initiated actions.** These actions are repeated hundreds of times daily. Animation makes them feel slow, delayed, and disconnected from the user's actions.
-
-Raycast has no open/close animation. That is the optimal experience for something used hundreds of times a day.
+**Do not delay keyboard-initiated actions.** Evaluate motion by purpose and frequency, not input device alone. Keep focus, selection and action feedback immediate; a short orientation transition may still help when it does not hold up the action.
 
 ### 2. What is the purpose?
 
@@ -88,7 +72,7 @@ Valid purposes:
 - **State indication**: a morphing feedback button shows the state change
 - **Explanation**: a marketing animation that shows how a feature works
 - **Feedback**: a button scales down on press, confirming the interface heard the user
-- **Preventing jarring changes**: elements appearing or disappearing without transition feel broken
+- **Orientation**: a transition can explain a change when an immediate update would be difficult to follow
 
 If the purpose is just "it looks cool" and the user will see it often, don't animate.
 
@@ -105,7 +89,7 @@ Is the element entering or exiting?
       Yes → linear
     Default → ease-out
 
-**Critical: use custom easing curves.** The built-in CSS easings are too weak. They lack the punch that makes animations feel intentional.
+**Reuse the project's easing tokens first.** Built-in CSS curves are valid. Introduce a custom curve only when it improves this interaction; these are examples, not mandatory replacements.
 
 ```css
 /* Strong ease-out for UI interactions */
@@ -118,9 +102,9 @@ Is the element entering or exiting?
 --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 ```
 
-**Never use ease-in for UI animations.** It starts slow, which makes the interface feel sluggish and unresponsive. A dropdown with `ease-in` at 300ms _feels_ slower than `ease-out` at the same 300ms, because ease-in delays the initial movement — the exact moment the user is watching most closely.
+**Prefer an immediate response for entrances.** Ease-out often suits a dropdown; ease-in can suit an exit or another intentionally accelerating movement. Judge the actual interaction and existing tokens rather than blocking a curve by name.
 
-**Easing curve resources:** Don't create curves from scratch. Use [easing.dev](https://easing.dev/) or [easings.co](https://easings.co/) to find stronger custom variants of standard easings.
+**Easing references:** Compare curves in [easing.dev](https://easing.dev/) or [easings.co](https://easings.co/) when an existing token does not serve the task.
 
 ### 4. How fast should it be?
 
@@ -129,219 +113,24 @@ Is the element entering or exiting?
 | Button press feedback    | 100-160ms     |
 | Tooltips, small popovers | 125-200ms     |
 | Dropdowns, selects       | 150-250ms     |
-| Modals, drawers          | 200-500ms     |
+| Modals, drawers          | 200-300ms by default; longer only when justified |
 | Marketing/explanatory    | Can be longer |
 
-**Rule: UI animations should stay under 300ms.** A 180ms dropdown feels more responsive than a 400ms one. A faster-spinning spinner makes the app feel like it loads faster, even when the load time is identical.
+**Use these ranges as starting points, not release gates.** Keep frequent controls brief. Justify longer travel or explanatory sequences against user benefit, reduced motion and measured behavior.
 
 ### Perceived performance
 
 Speed in animation is not just about feeling snappy — it directly affects how users perceive your app's performance:
 
-- A **fast-spinning spinner** makes loading feel faster (same load time, different perception)
+- Give immediate, honest **pending and completion feedback**; do not imply progress that has not occurred
 - A **180ms select** animation feels more responsive than a **400ms** one
 - **Instant tooltips** after the first one is open (skip delay + skip animation) make the whole toolbar feel faster
 
 The perception of speed matters as much as actual speed. Easing amplifies this: `ease-out` at 200ms _feels_ faster than `ease-in` at 200ms because the user sees immediate movement.
 
-## Spring Animations
+## Component patterns
 
-Springs feel more natural than duration-based animations because they simulate real physics. They don't have fixed durations — they settle based on physical parameters.
-
-### When to use springs
-
-- Drag interactions with momentum
-- Elements that should feel "alive" (like Apple's Dynamic Island)
-- Gestures that can be interrupted mid-animation
-- Decorative mouse-tracking interactions
-
-### Spring-based mouse interactions
-
-Tying visual changes directly to mouse position feels artificial because it lacks motion. Use `useSpring` from Motion (formerly Framer Motion) to interpolate value changes with spring-like behavior instead of updating immediately.
-
-```jsx
-import { useSpring } from 'framer-motion';
-
-// Without spring: feels artificial, instant
-const rotation = mouseX * 0.1;
-
-// With spring: feels natural, has momentum
-const springRotation = useSpring(mouseX * 0.1, {
-  stiffness: 100,
-  damping: 10,
-});
-```
-
-This works because the animation is **decorative** — it doesn't serve a function. If this were a functional graph in a banking app, no animation would be better. Know when decoration helps and when it hinders.
-
-### Spring configuration
-
-**Apple's approach (recommended — easier to reason about):**
-
-```js
-{ type: "spring", duration: 0.5, bounce: 0.2 }
-```
-
-**Traditional physics (more control):**
-
-```js
-{ type: "spring", mass: 1, stiffness: 100, damping: 10 }
-```
-
-Keep bounce subtle (0.1-0.3) when used. Avoid bounce in most UI contexts. Use it for drag-to-dismiss and playful interactions.
-
-### Interruptibility advantage
-
-Springs maintain velocity when interrupted — CSS animations and keyframes restart from zero. This makes springs ideal for gestures users might change mid-motion. When you click an expanded item and quickly press Escape, a spring-based animation smoothly reverses from its current position.
-
-## Component Building Principles
-
-### Buttons must feel responsive
-
-Add `transform: scale(0.97)` on `:active`. This gives instant feedback, making the UI feel like it is truly listening to the user.
-
-```css
-.button {
-  transition: transform 160ms ease-out;
-}
-
-.button:active {
-  transform: scale(0.97);
-}
-```
-
-This applies to any pressable element. The scale should be subtle (0.95-0.98).
-
-### Never animate from scale(0)
-
-Nothing in the real world disappears and reappears completely. Elements animating from `scale(0)` look like they come out of nowhere.
-
-Start from `scale(0.9)` or higher, combined with opacity. Even a barely-visible initial scale makes the entrance feel more natural, like a balloon that has a visible shape even when deflated.
-
-```css
-/* Bad */
-.entering {
-  transform: scale(0);
-}
-
-/* Good */
-.entering {
-  transform: scale(0.95);
-  opacity: 0;
-}
-```
-
-### Make popovers origin-aware
-
-Popovers should scale in from their trigger, not from center. The default `transform-origin: center` is wrong for almost every popover. **Exception: modals.** Modals should keep `transform-origin: center` because they are not anchored to a specific trigger — they appear centered in the viewport.
-
-```css
-/* Base UI */
-.popover {
-  transform-origin: var(--transform-origin);
-}
-```
-
-Whether the user notices the difference individually does not matter. In the aggregate, unseen details become visible. They compound.
-
-### Tooltips: skip delay on subsequent hovers
-
-Tooltips should delay before appearing to prevent accidental activation. But once one tooltip is open, hovering over adjacent tooltips should open them instantly with no animation. This feels faster without defeating the purpose of the initial delay.
-
-```css
-.tooltip {
-  transition: transform 125ms ease-out, opacity 125ms ease-out;
-  transform-origin: var(--transform-origin);
-}
-
-.tooltip[data-starting-style],
-.tooltip[data-ending-style] {
-  opacity: 0;
-  transform: scale(0.97);
-}
-
-/* Skip animation on subsequent tooltips */
-.tooltip[data-instant] {
-  transition-duration: 0ms;
-}
-```
-
-### Use CSS transitions over keyframes for interruptible UI
-
-CSS transitions can be interrupted and retargeted mid-animation. Keyframes restart from zero. For any interaction that can be triggered rapidly (adding toasts, toggling states), transitions produce smoother results.
-
-```css
-/* Interruptible - good for UI */
-.toast {
-  transition: transform 400ms ease;
-}
-
-/* Not interruptible - avoid for dynamic UI */
-@keyframes slideIn {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-```
-
-### Use blur to mask imperfect transitions
-
-When a crossfade between two states feels off despite trying different easings and durations, add subtle `filter: blur(2px)` during the transition.
-
-**Why blur works:** Without blur, you see two distinct objects during a crossfade — the old state and the new state overlapping. This looks unnatural. Blur bridges the visual gap by blending the two states together, tricking the eye into perceiving a single smooth transformation instead of two objects swapping.
-
-Combine blur with scale-on-press (`scale(0.97)`) for a polished button state transition:
-
-```css
-.button {
-  transition: transform 160ms ease-out;
-}
-
-.button:active {
-  transform: scale(0.97);
-}
-
-.button-content {
-  transition: filter 200ms ease, opacity 200ms ease;
-}
-
-.button-content.transitioning {
-  filter: blur(2px);
-  opacity: 0.7;
-}
-```
-
-Keep blur under 20px. Heavy blur is expensive, especially in Safari.
-
-### Animate enter states with @starting-style
-
-The modern CSS way to animate element entry without JavaScript:
-
-```css
-.toast {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 400ms ease, transform 400ms ease;
-
-  @starting-style {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-}
-```
-
-This replaces the common React pattern of using `useEffect` to set `mounted: true` after initial render. Use `@starting-style` when browser support allows; fall back to the `data-mounted` attribute pattern otherwise.
-
-```jsx
-// Legacy pattern (still works everywhere)
-useEffect(() => {
-  setMounted(true);
-}, []);
-// <div data-mounted={mounted}>
-```
+For springs, press feedback, popovers, tooltips, interruptible transitions and CSS entry examples, read [component-patterns.md](references/component-patterns.md) when the task needs them. Preserve native semantics and visible no-JavaScript content before applying an effect.
 
 ## CSS Transform Mastery
 
@@ -365,7 +154,7 @@ Prefer percentages over hardcoded pixel values. They are less error-prone and ad
 
 ### scale() scales children too
 
-Unlike `width`/`height`, `scale()` also scales an element's children. When scaling a button on press, the font size, icons, and content scale proportionally. This is a feature, not a bug.
+Unlike `width`/`height`, `scale()` scales children and leaves the original layout space unchanged. Use it only when those differences are intended. Do not replace layout changes mechanically; protect readable text, hit targets and surrounding flow.
 
 ### 3D transforms for depth
 
@@ -422,19 +211,19 @@ Every element has an anchor point from which transforms execute. The default is 
 
 ### Tabs with perfect color transitions
 
-Duplicate the tab list. Style the copy as "active" (different background, different text color). Clip the copy so only the active tab is visible. Animate the clip on tab change. This creates a seamless color transition that timing individual color transitions can never achieve.
+Keep one semantic, keyboard-operable tab list. If a clipped overlay is justified, build its visual copy from noninteractive text, mark it `aria-hidden="true"` and `inert`, disable its pointer events and avoid duplicated IDs. The real controls alone own focus, selection and events. A plain color change is a valid simpler solution.
 
 ### Hold-to-delete pattern
 
-Use `clip-path: inset(0 100% 0 0)` on a colored overlay. On `:active`, transition to `inset(0 0 0 0)` over 2s with linear timing. On release, snap back with 200ms ease-out. Add `scale(0.97)` on the button for press feedback.
+A clip-path overlay may show hold progress, but it is not an action controller. Preserve cancellation on release, pointer cancellation and focus loss, and provide an accessible click/keyboard confirmation alternative. Do not require a timing-dependent gesture as the only way to perform a destructive action.
 
 ### Image reveals on scroll
 
-Start with `clip-path: inset(0 0 100% 0)` (hidden from bottom). Animate to `inset(0 0 0 0)` when the element enters the viewport. Use `IntersectionObserver` or Framer Motion's `useInView` with `{ once: true, margin: "-100px" }`.
+Keep images and text visible in base HTML/CSS. An observer may add a one-shot entrance animation after initialization; it must not be the only code that reveals content. Skip optional motion when reduced motion is requested or observation is unavailable.
 
 ### Comparison sliders
 
-Overlay two images. Clip the top one with `clip-path: inset(0 50% 0 0)`. Adjust the right inset value based on drag position. No extra DOM elements needed, fully hardware-accelerated.
+Overlay two images and clip the top one. Drive the comparison with an accessible labeled control that supports keyboard input as well as dragging. Test `clip-path` performance on target browsers; hardware acceleration is not universal.
 
 ## Gesture and Drag Interactions
 
@@ -443,7 +232,7 @@ Overlay two images. Clip the top one with `clip-path: inset(0 50% 0 0)`. Adjust 
 Don't require dragging past a threshold. Calculate velocity: `Math.abs(dragDistance) / elapsedTime`. If velocity exceeds ~0.11, dismiss regardless of distance. A quick flick should be enough.
 
 ```js
-const timeTaken = new Date().getTime() - dragStartTime.current.getTime();
+const timeTaken = Math.max(1, new Date().getTime() - dragStartTime.current.getTime());
 const velocity = Math.abs(swipeAmount) / timeTaken;
 
 if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.11) {
@@ -474,73 +263,48 @@ function onPress() {
 
 Instead of preventing upward drag entirely, allow it with increasing friction. It feels more natural than hitting an invisible wall.
 
-## Performance Rules
+## Performance rules
 
-### Only animate transform and opacity
+### Preserve behavior before optimizing
 
-These properties skip layout and paint, running on the GPU. Animating `padding`, `margin`, `height`, or `width` triggers all three rendering steps.
+Prefer `transform` and `opacity` for visual effects when they preserve layout and meaning. Their compositing path is often efficient, but not an unconditional guarantee. Layout properties can be justified when content must reflow; measure the affected area.
 
-### CSS variables are inheritable
+Do not substitute `opacity: 0` for a real hidden state. Preserve focus management, accessibility-tree visibility and interaction state through appropriate HTML/CSS. Likewise, `scale()` changes child rendering and leaves layout space intact; it is not equivalent to changing height or padding.
 
-Changing a CSS variable on a parent recalculates styles for all children. In a drawer with many items, updating `--swipe-amount` on the container causes expensive style recalculation. Update `transform` directly on the element instead.
+### Check inherited updates
 
-```js
-// Bad: triggers recalc on all children
-element.style.setProperty('--swipe-amount', `${distance}px`);
+Per-frame updates to inherited CSS custom properties can invalidate descendant styles. Profile the actual subtree; localize the update or use an appropriate non-inherited property when supported. Preserve any existing transforms instead of overwriting them blindly.
 
-// Good: only affects this element
-element.style.transform = `translateY(${distance}px)`;
-```
+### Check the installed Motion version
 
-### Framer Motion hardware acceleration caveat
+Older advice that Motion `x`, `y` or `scale` always run on the main thread is not a current universal rule. Motion 14.2.0 (2026-10-13) added hardware-accelerated independent transforms. Check the installed package version, animation and browser before changing an API.
 
-Framer Motion's shorthand properties (`x`, `y`, `scale`) are NOT hardware-accelerated. They use `requestAnimationFrame` on the main thread. For hardware acceleration, use the full `transform` string:
+The current [React animation guide](https://motion.dev/docs/react-animation), [changelog](https://motion.dev/changelog) and [performance guide](https://motion.dev/docs/performance) describe the supported paths and caveats. Treat acceleration as progressive enhancement, not a guarantee.
 
-```jsx
-// NOT hardware accelerated (convenient but drops frames under load)
-<motion.div animate={{ x: 100 }} />
+### Choose CSS, WAAPI or a library by the task
 
-// Hardware accelerated (stays smooth even when main thread is busy)
-<motion.div animate={{ transform: "translateX(100px)" }} />
-```
+CSS transitions and WAAPI can run eligible animations off the main thread; a JavaScript library can also hand animation to WAAPI. A `requestAnimationFrame` loop itself runs on the main thread. Choose native HTML/CSS first for simple website interactions; use an existing library for behavior that justifies it.
 
-This matters when the browser is simultaneously loading content, running scripts, or painting. At Vercel, the dashboard tab animation used Shared Layout Animations and dropped frames during page loads. Switching to CSS animations (off main thread) fixed it.
-
-### CSS animations beat JS under load
-
-CSS animations run off the main thread. When the browser is busy loading a new page, Framer Motion animations (using `requestAnimationFrame`) drop frames. CSS animations remain smooth. Use CSS for predetermined animations; JS for dynamic, interruptible ones.
-
-### Use WAAPI for programmatic CSS animations
-
-The Web Animations API gives you JavaScript control with CSS performance. Hardware-accelerated, interruptible, and no library needed.
-
-```js
-element.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)' }], {
-  duration: 1000,
-  fill: 'forwards',
-  easing: 'cubic-bezier(0.77, 0, 0.175, 1)',
-});
-```
+Keep base content visible and optional animations out of the reduced-motion path. Do not infer that CSS, WAAPI, `clip-path` or a library name alone guarantees smoothness. Measure a demonstrated problem before adding layers, `will-change` or dependencies.
 
 ## Accessibility
 
 ### prefers-reduced-motion
 
-Animations can cause motion sickness. Reduced motion means fewer and gentler animations, not zero. Keep opacity and color transitions that aid comprehension. Remove movement and position animations.
+Remove or reduce nonessential motion, including a fully static state. A short opacity or color transition can remain when useful, but it is not mandatory. Preserve text, selection, focus and status cues independently of movement.
+
+Prefer opt-in motion:
 
 ```css
-@media (prefers-reduced-motion: reduce) {
-  .element {
-    animation: fade 0.2s ease;
-    /* No transform-based motion */
+/* Content and controls are visible and functional in the base styles. */
+@media (prefers-reduced-motion: no-preference) {
+  .state-indicator {
+    transition: opacity 160ms ease-out;
   }
 }
 ```
 
-```jsx
-const shouldReduceMotion = useReducedMotion();
-const closedX = shouldReduceMotion ? 0 : '-100%';
-```
+For existing components, override only their motion effects. Do not reset transforms globally: some transforms position content or convey functional state. Ensure enter/exit cleanup and hidden states still complete when a duration is zero.
 
 ### Touch device hover states
 
@@ -556,7 +320,7 @@ Touch devices trigger hover on tap, causing false positives. Gate hover animatio
 
 ## The Sonner Principles (Building Loved Components)
 
-These principles come from building Sonner (13M+ weekly npm downloads) and apply to any component:
+These principles from Sonner's component design can inform other components:
 
 1. **Developer experience is key.** No hooks, no context, no complex setup. Insert `<Toaster />` once, call `toast()` from anywhere. The less friction to adopt, the more people will use it.
 
@@ -566,7 +330,7 @@ These principles come from building Sonner (13M+ weekly npm downloads) and apply
 
 4. **Handle edge cases invisibly.** Pause toast timers when the tab is hidden. Fill gaps between stacked toasts with pseudo-elements to maintain hover state. Capture pointer events during drag. Users never notice these, and that is exactly right.
 
-5. **Use transitions, not keyframes, for dynamic UI.** Toasts are added rapidly. Keyframes restart from zero on interruption. Transitions retarget smoothly.
+5. **Preserve state during interruption.** Toasts may be added rapidly. Transitions can retarget smoothly; any other mechanism must also handle a mid-animation update without restarting visibly.
 
 6. **Build a great documentation site.** Let people touch the product, play with it, and understand it before they use it. Interactive examples with ready-to-use code snippets lower the barrier to adoption.
 
@@ -600,39 +364,18 @@ Pressing should be slow when it needs to be deliberate (hold-to-delete: 2s linea
 }
 ```
 
-## Stagger Animations
+## Stagger animations
 
-When multiple elements enter together, stagger their appearance. Each element animates in with a small delay after the previous one. This creates a cascading effect that feels more natural than everything appearing at once.
+Use a short stagger only when it improves reading order or explains a small set of related items. Showing all items immediately is often preferable, especially for frequent tasks and long lists. Never delay access to essential information or controls.
 
-```css
-.item {
-  opacity: 0;
-  transform: translateY(8px);
-  animation: fadeIn 300ms ease-out forwards;
-}
+Implement an optional entrance as a one-shot lifecycle:
 
-.item:nth-child(1) {
-  animation-delay: 0ms;
-}
-.item:nth-child(2) {
-  animation-delay: 50ms;
-}
-.item:nth-child(3) {
-  animation-delay: 100ms;
-}
-.item:nth-child(4) {
-  animation-delay: 150ms;
-}
+1. Keep the base content visible and operable. Skip the effect for reduced motion, an already focused item or an unavailable enhancement API.
+2. Start only a justified entrance, with a short bounded total delay; preserve existing layout transforms.
+3. When focus enters, the animation completes or is canceled, permanently clear its entrance trigger and expose the final visible state. Later focus-out or motion-preference changes must not replay the entrance.
+4. Clean up listeners when the view is disposed. Essential content must not depend on animation completion or cleanup to become available.
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-```
-
-Keep stagger delays short (30-80ms between items). Long delays make the interface feel slow. Stagger is decorative — never block interaction while stagger animations are playing.
+Do not merely toggle `animation: none` with `:focus-within` while leaving the entrance trigger set: focus leaving can restart the animation and make the item disappear again. Leave long reading content and frequently used controls immediate.
 
 ## Debugging Animations
 
@@ -653,22 +396,20 @@ Step through animations frame by frame in Chrome DevTools (Animations panel). Th
 
 ### Test on real devices
 
-For touch interactions (drawers, swipe gestures), test on physical devices. Connect your phone via USB, visit your local dev server by IP address, and use Safari's remote devtools. The Xcode Simulator is an alternative but real hardware is better for gesture testing.
+For touch interactions, use a physical target device when an authorized setup is available. Emulation and source inspection provide partial evidence; state which device behaviors remain unverified. Do not assume the user has a separate computer or expose a development server just to satisfy this check. Complete the checks available in the current environment.
 
-## Review Checklist
+## Review checklist
 
-When reviewing UI code, check for:
+| Check | Response |
+| --- | --- |
+| Hidden or clipped content remains focusable | Correct semantics and focus before animating. |
+| Essential content depends on JavaScript to become visible | Keep visible base HTML/CSS; enhance after initialization. |
+| Reduced-motion preference or rapid keyboard input is obstructed | Remove or reduce the effect; keep state and focus feedback. |
+| `transition: all` changes unrelated properties | Specify only the intended properties. |
+| An entrance, easing, duration or stagger distracts | Use project tokens, simplify or remove it; explain the observed impact. |
+| An anchored popover moves from the wrong place | Align the origin with its trigger; centered dialogs have different needs. |
+| Repeated actions restart or block an animation | Retarget from current state without delaying the action. |
+| Hover assumptions fail on touch | Gate hover effects by capability and preserve touch/keyboard alternatives. |
+| Motion or a paint-heavy effect drops frames | Check versions, profile the affected case, then make a targeted change. |
 
-| Issue                                      | Fix                                                              |
-| ------------------------------------------ | ---------------------------------------------------------------- |
-| `transition: all`                          | Specify exact properties: `transition: transform 200ms ease-out` |
-| `scale(0)` entry animation                 | Start from `scale(0.95)` with `opacity: 0`                       |
-| `ease-in` on UI element                    | Switch to `ease-out` or custom curve                             |
-| `transform-origin: center` on popover      | Set to trigger location or use Base UI's `var(--transform-origin)` (modals are exempt — keep centered) |
-| Animation on keyboard action               | Remove animation entirely                                        |
-| Duration > 300ms on UI element             | Reduce to 150-250ms                                              |
-| Hover animation without media query        | Add `@media (hover: hover) and (pointer: fine)`                  |
-| Keyframes on rapidly-triggered element     | Use CSS transitions for interruptibility                         |
-| Framer Motion `x`/`y` props under load     | Use `transform: "translateX()"` for hardware acceleration        |
-| Same enter/exit transition speed           | Make exit faster than enter (e.g., enter 2s, exit 200ms)         |
-| Elements all appear at once                | Add stagger delay (30-80ms between items)                        |
+Do not treat taste preferences as automatic merge blockers. Report exactly what was inspected, run or observed and any remaining device/browser limitations.

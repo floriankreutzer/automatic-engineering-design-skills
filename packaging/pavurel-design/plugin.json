@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "pavurel-design",
+  "version": "1.0.0",
+  "description": "Review and improve Pavurel websites and Conference Manager Customer and Platform interfaces under their current repository standards, with optional requested 21st design research.",
+  "author": { "name": "Pavurel" },
+  "repository": "https://github.com/floriankreutzer/automatic-engineering-design-skills",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Pavurel Design",
+        "shortDescription": "Pavurel design workflows",
+        "longDescription": "Apply the existing Pavurel website or Customer and Platform design profile while keeping current target-repository requirements authoritative. Includes three reviewed skills and their supporting references. Use 21st research only when requested and when the separate connection is actually available.",
+        "developerName": "Pavurel",
+        "category": "Developer Tools",
+        "capabilities": [],
+        "defaultPrompt": [
+          "Use pavurel-web-design to review the German and English website pages for repeated content and demo CTA placement without editing.",
+          "Use pavurel-app-design to review a Customer or Platform workflow against its current repository standards without editing.",
+          "Use 21st-design-research to search for relevant component references and return up to three source names and IDs; do not retrieve code or generate anything."
+        ]
+      }
+    }
+  }
+}

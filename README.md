@@ -97,6 +97,24 @@ The `agents/openai.yaml` policies for `prototype`, `pick-ui-library`, `review-an
 
 CLI syntax and version were checked against the official [skills 1.7.4 source](https://github.com/vercel-labs/skills/tree/a80e4c9d12d607631249d4d7d059f835d4b2f13a). The installer has its own network and telemetry behavior; see its [documentation](https://github.com/vercel-labs/skills/blob/a80e4c9d12d607631249d4d7d059f835d4b2f13a/docs/troubleshooting.md). Review a CLI update deliberately instead of silently switching to `@latest`.
 
+## Private ChatGPT plugin package
+
+The versioned manifest in `packaging/pavurel-design/plugin.json` and the network-free Python 3 builder package exactly three existing skills: `pavurel-web-design`, `pavurel-app-design` and `21st-design-research`. Their eleven source files are copied byte-for-byte, including references and agent metadata. Optional specialists remain separate. The original MIT license and attribution are included.
+
+From a reviewed checkout of this repository, build the package with its full accepted commit SHA:
+
+```bash
+python3 scripts/package_pavurel_plugin.py \
+  --source-ref REVIEWED_COMMIT_SHA \
+  --output dist/pavurel-design-1.0.0.zip
+```
+
+Verify that the source inputs match that commit before building. The builder records the supplied source ref and hashes; it does not independently authenticate the commit. Its explicit file allowlist keeps unrelated skills and local files out of the package. Update that allowlist deliberately if a selected skill gains a required resource. Identical inputs produce the same archive with fixed entry ordering, timestamps and modes. Generated archives stay outside version control.
+
+The private account package contains instructions and supporting files only. It adds no server, application runtime, account credentials or mandatory 21st connection. Preserve `21st-design-research`'s explicit-invocation policy. Its optional external research still requires the actual available tools and the user's task scope.
+
+Save the inspected archive through the supported Plugin Creator account flow, then verify the returned scope, component inventory and installation state. Account storage, installation and availability in a new conversation are separate checks. Test the installed profiles with relevant read-only website and application tasks and a requested search-only 21st task. GitHub remains authoritative for development; copying this package does not establish automatic GitHub-to-account synchronization. Keep private plugin identifiers, account receipts and Confluence URLs out of this public repository.
+
 ## Optional specialists
 
 | Skill | Use when |

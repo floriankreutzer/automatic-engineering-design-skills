@@ -24,3 +24,34 @@ Read this file and `README.md` before reviewing or changing this collection. Pre
 Read each existing file before editing it. Keep changes bounded and preserve unrelated work. Validate changed skill frontmatter, names, bundled references and agent metadata; check Markdown and diffs. Forward-test substantial instruction changes using realistic tasks and minimal context. Execute behavioral examples when their code changes; do not claim application/browser tests ran when only instructions changed.
 
 Record exact reviewed refs and actual checks in the pull request. Keep installed, proposed, merged and deployed states distinct. Use the existing pull-request workflow; do not bypass reviews, checks or cost controls. Save completed skill changes in this Git repository and synchronize the reviewed branch before reporting them saved.
+
+## Automatic engineering knowledge workflow
+
+For engineering tasks performed for the repository owner, use the available
+`use-agent-knowledge` skill by default, without waiting for a separate reminder.
+This owner-agent workflow is supplementary; it is not a dependency for external
+contributors or API consumers.
+
+1. Read this repository's current required instructions and standards first.
+   With the existing authorized GitHub connection, resolve the current default
+   branch of `floriankreutzer/automatic-engineering-agent-knowledge` and read its
+   `AGENTS.md`, `README.md`, `INDEX.md`, `projects.json` and matching project
+   entry point. Use this source workflow directly if the skill is unavailable.
+2. Retrieve only relevant verified entries before implementation, debugging,
+   review or validation. Check scope, evidence and review dates; verify mutable
+   claims against the current owning sources. Repeat when the task or repository
+   scope changes. These entries do not override this repository's requirements.
+3. After a meaningful verified result and before handover, automatically capture
+   new durable, reusable learning in that private knowledge repository. Routine
+   knowledge maintenance is part of the owner's requested project workflow.
+   Deduplicate or update existing entries; record evidence and limitations;
+   follow the knowledge repository's format, validation and pull-request rules.
+   Make no write when there is no new useful conclusion.
+4. An explicit read-only or no-persistence request takes precedence. Do not infer
+   unrelated permissions, installations, deployments or spending authority from
+   stored notes. If the skill, connection or knowledge access is unavailable,
+   report that limit and continue work permitted by this repository; never claim
+   unread knowledge was used or an unverified write was saved.
+5. Keep private knowledge, transcripts, credentials and customer data out of this
+   public repository. Report briefly which learning IDs informed the work and
+   which knowledge commit or pull request was actually saved.

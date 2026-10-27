@@ -12,6 +12,7 @@ Owner: [conference-manager](https://github.com/floriankreutzer/conference-manage
 | Engineering and validation requirements | [Coding standards](https://github.com/floriankreutzer/conference-manager/blob/main/docs/CODING-STANDARDS.md) |
 | Architecture and capability ownership | [Architecture](https://github.com/floriankreutzer/conference-manager/blob/main/docs/ARCHITECTURE.md) |
 | Brand, typography, density and CSS ownership | [Design system](https://github.com/floriankreutzer/conference-manager/blob/main/docs/DESIGN-SYSTEM.md), [tokens](https://github.com/floriankreutzer/conference-manager/blob/main/assets/tokens.css) |
+| Shared functional icons, provenance and separate Microsoft sign-in assets | [Canonical icon system](https://github.com/floriankreutzer/conference-manager/blob/main/docs/ICON-SYSTEM.md); apply the target [design system](https://github.com/floriankreutzer/conference-manager/blob/main/docs/DESIGN-SYSTEM.md) and verify actual component integration separately |
 | Existing UI and localization contracts | [Core UI](https://github.com/floriankreutzer/conference-manager/blob/main/src/core/ui.js), [i18n](https://github.com/floriankreutzer/conference-manager/blob/main/src/core/i18n.js) |
 | Customer roles and technical/business ownership | [Role model](https://github.com/floriankreutzer/conference-manager/blob/main/docs/ROLE-MODEL.md) |
 | Security and session behavior | [Production security](https://github.com/floriankreutzer/conference-manager/blob/main/docs/PRODUCTION-SECURITY.md), [Production session](https://github.com/floriankreutzer/conference-manager/blob/main/docs/PRODUCTION-SESSION.md), [Demo security](https://github.com/floriankreutzer/conference-manager/blob/main/docs/DEMO-SECURITY.md) |
@@ -34,3 +35,5 @@ Read each affected repository's own instructions for cross-repository work. Do n
 ## Verification provenance
 
 This map was checked on 2026-10-24 against application `03cc888b434deaada756447359703a166cd85c23` and website `63c72fed1502bc43b4142900f87d052a8b967350`. Resolve current main on later use. Keep Confluence records, private URLs and operational evidence outside this public skill package.
+
+The icon-system locator was reviewed separately on 2026-10-27 against the published application source [`a39664b20bef4d32a897577f0127bda74d86b28f`](https://github.com/floriankreutzer/conference-manager/commit/a39664b20bef4d32a897577f0127bda74d86b28f) in [PR #402](https://github.com/floriankreutzer/conference-manager/pull/402). This immutable reference records the inspected icon contract; its `main` link locates the current owning source. Publication of the PR source alone does not establish merge, UI integration or deployment.

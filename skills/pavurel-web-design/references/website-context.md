@@ -8,6 +8,7 @@ Read the current local equivalents in the target checkout, including any renamed
 | --- | --- |
 | Mandatory instructions and precedence | [AGENTS.md](https://github.com/floriankreutzer/conference-manager-website/blob/main/AGENTS.md) |
 | Design, typography, tokens and asset families | [Design system](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/DESIGN-SYSTEM.md) |
+| Shared functional icons, versioned asset sources and separate provider marks | [Canonical icon system](https://github.com/floriankreutzer/conference-manager/blob/main/docs/ICON-SYSTEM.md); verify the linked manifests and actual Astro consumers |
 | Audience journey, page ownership and CTA placement | [Marketing experience](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/MARKETING-EXPERIENCE.md) |
 | Approved claims, product boundaries and offer wording | [Content governance](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/CONTENT-GOVERNANCE.md) |
 | Runtime, component and application boundary | [Architecture](https://github.com/floriankreutzer/conference-manager-website/blob/main/docs/ARCHITECTURE.md) |
@@ -45,3 +46,5 @@ Keep native Expo/Swift work in its own project. Use dependency specialists only 
 ## Verification provenance
 
 The map was checked on 2026-10-24 against website `63c72fed1502bc43b4142900f87d052a8b967350`. This ref records what was inspected; it is not a permanent implementation baseline. Do not place internal documentation URLs, customer data, credentials or private operational evidence in this public package.
+
+The cross-repository icon-system locator was reviewed separately on 2026-10-27 against the published application source [`a39664b20bef4d32a897577f0127bda74d86b28f`](https://github.com/floriankreutzer/conference-manager/commit/a39664b20bef4d32a897577f0127bda74d86b28f) in [PR #402](https://github.com/floriankreutzer/conference-manager/pull/402). This immutable reference records the inspected icon contract; its `main` link locates the current owning source. Publication of the PR source alone does not establish merge, UI integration or deployment.

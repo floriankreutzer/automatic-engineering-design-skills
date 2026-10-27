@@ -33,6 +33,8 @@ Read the current architecture before choosing a component or dependency. The ver
 
 Keep the official product identity, approved assets and visual rules from the central design system. Improve hierarchy, spacing, labels and action placement using its tokens. Use images when they support a real task; preserve asset provenance. Do not copy marketing layouts or another product's typography into operational screens by default.
 
+For UI icons, read the [canonical Pavurel icon system](https://github.com/floriankreutzer/conference-manager/blob/main/docs/ICON-SYSTEM.md), its versioned manifests and the target design system before choosing a motif or variant. Reuse the governed semantic mapping through the existing native component boundary; an asset draft does not prove application integration. Keep the corporate signet and provider marks outside the functional icon set. For Microsoft sign-in, use the unchanged official assets and the owning localization/accessibility guidance; do not redraw the logo or borrow a catalogue's replacement.
+
 Respect the existing module ownership and public contracts. In the verified source, `src/platform/` contains cross-cutting Customer infrastructure; `src/platform-admin/` owns the separate Operator interface. Shared appearance does not merge their APIs, sessions, data or permissions.
 
 ## Make state and actions understandable

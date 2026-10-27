@@ -19,6 +19,8 @@ Confluence documents decisions, rationale, procedures, source links and evidence
 
 When a profile/example conflicts with a current repository rule, follow the repository and identify the discrepancy. Do not weaken a rule to adopt a component. A reference to a profile does not install it.
 
+For Pavurel icon work, follow the [canonical icon system](https://github.com/floriankreutzer/conference-manager/blob/main/docs/ICON-SYSTEM.md) and the target repository's design system. Read the linked versioned asset manifests before reuse; distinguish the asset draft from an integrated component. Keep Microsoft sign-in and other provider marks separate from Pavurel functional icons, using their original assets and owning guidance. These profiles locate the shared policy rather than maintaining another icon catalogue.
+
 ## Recommended website selection
 
 Install the profile together with only the specialists you need. The initial website selection is:
@@ -161,6 +163,8 @@ The fork started from upstream commit `2d228630ba1446365f614a108cb8252f1feda202`
 When updating from upstream, inspect the diff against these adaptations. Verify library advice against installed versions and primary documentation. Validate changed skill frontmatter, bundled relative links and examples that contain behavior; use realistic task checks for substantial instruction changes. Keep README selection and UI metadata aligned with the actual skills. Do not add production dependencies or publishing workflows merely to distribute Markdown skills.
 
 The public source maps were checked on 2026-10-24 against website `63c72fed1502bc43b4142900f87d052a8b967350` and application `03cc888b434deaada756447359703a166cd85c23`. They point to current target-project sources instead of treating those snapshots as permanent specifications. Keep internal business and customer data outside this public repository.
+
+Icon-routing references were reviewed separately on 2026-10-27 against the published application source [`a39664b20bef4d32a897577f0127bda74d86b28f`](https://github.com/floriankreutzer/conference-manager/commit/a39664b20bef4d32a897577f0127bda74d86b28f) in [PR #402](https://github.com/floriankreutzer/conference-manager/pull/402). This immutable reference records the inspected icon contract; the `main` links above locate its current owning source. Publication of the PR source alone does not establish merge, UI integration or deployment.
 
 ## Attribution and license
 

@@ -39,6 +39,8 @@ For the verified Conference Manager setup, website implementation belongs in Ast
 
 Verify code license and any attribution obligations separately from preview/image/icon rights. Keep the project's existing icon and approved brand asset system consistent. Respect its CSP and dependency process. A design-reference workflow should not add 21st requests to the shipped application.
 
+For Pavurel adaptations, read the [canonical icon system](https://github.com/floriankreutzer/conference-manager/blob/main/docs/ICON-SYSTEM.md) through the target design system. Retain its semantic motifs instead of importing a candidate's icon family. Keep Microsoft sign-in and other provider marks as unchanged official assets under their own guidance; do not generate or redraw them to match a catalogue example.
+
 Use isolated synthetic previews for alternatives. Implement only the selected, authorized change and run the target repository's required checks.
 
 ## Report and document

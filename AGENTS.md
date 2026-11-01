@@ -4,7 +4,7 @@ Read this file and `README.md` before reviewing or changing this collection. Pre
 
 ## Authority and scope
 
-- GitHub owns development requirements. In a target project, read its current root `AGENTS.md`, applicable nested instructions, and the central design, coding, architecture, security, content and test sources they reference. These sources take precedence over every profile, specialist, example and external component in this collection, subject to host instructions and the user's explicit decisions.
+- Jira owns internal work management and delivery status for Conference Manager; GitHub owns engineering requirements, source code and native technical evidence. In a target project, read its current root `AGENTS.md`, applicable nested instructions, and the central design, coding, architecture, security, content and test sources they reference. These sources take precedence over every profile, specialist, example and external component in this collection, subject to host instructions and the user's explicit decisions.
 - Keep those existing central requirements in their owning repositories. Profiles describe how to apply and find them; do not transfer or duplicate normative token values, role matrices, publication rules, test gates or API contracts into skills.
 - Confluence documents decisions, rationale, procedures, source links and evidence. It does not override GitHub development requirements. A documented proposal is not merged implementation or a release approval. Follow the space's documentation governance when actually editing Confluence.
 - Resolve the current accepted `main` and the exact work ref. Use the checkout's applicable instructions for the change, identify unmerged proposals explicitly, and report relevant discrepancies. Do not overwrite newer decisions with a dated skill snapshot.
@@ -55,3 +55,12 @@ contributors or API consumers.
 5. Keep private knowledge, transcripts, credentials and customer data out of this
    public repository. Report briefly which learning IDs informed the work and
    which knowledge commit or pull request was actually saved.
+
+## Jira-led delivery governance
+
+- Reuse the originating `CO-*` Jira work item when a design-skill change is derived from Conference Manager product work.
+- Create a dedicated Jira task only when the design-skill system itself is the work item.
+- Use the Jira key in branch and pull-request titles where practical.
+- Pull requests remain concise engineering-review artifacts; work status, acceptance and audit coordination belong in Jira.
+- Do not create GitHub Issues or Milestones for new internal Conference Manager work.
+

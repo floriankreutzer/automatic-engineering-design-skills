@@ -1,0 +1,24 @@
+name: Jira PR title
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+
+# No checkout, secrets, tokens or untrusted code execution.
+permissions: {}
+
+jobs:
+  jira-pr-title:
+    name: Jira PR title
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require a positive Jira CO key and description
+        shell: bash
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if [[ ! "$PR_TITLE" =~ ^CO-[1-9][0-9]*[[:space:]]+[^[:space:]] ]]; then
+            echo "::error title=Invalid Jira PR title::Expected CO-<positive number> followed by a description."
+            exit 1
+          fi

@@ -4,11 +4,11 @@ A curated fork of [Emil Kowalski's design engineering skills](https://github.com
 
 Use these profiles to locate and apply the target project's existing requirements. Specialists supply focused design and engineering methods. Read [AGENTS.md](AGENTS.md) when maintaining this collection.
 
-## Development authority and documentation
+## Delivery authority and documentation
 
-GitHub is authoritative for development: read the target repository's current `AGENTS.md`, applicable nested instructions and the central design, coding, architecture, security, content and test documents they reference. Existing central requirements remain in their owning repositories; profiles do not replace them or duplicate token values, role models, API contracts or release gates. Host instructions and the user's explicit decisions retain precedence.
+Jira is authoritative for internal work management and delivery status. GitHub is authoritative for engineering implementation and native technical evidence: read the target repository's current `AGENTS.md`, applicable nested instructions and the central design, coding, architecture, security, content and test documents they reference. Existing central requirements remain in their owning repositories; profiles do not replace them or duplicate token values, role models, API contracts or release gates. Host instructions and the user's explicit decisions retain precedence.
 
-Confluence documents decisions, rationale, procedures, source links and evidence. It does not supply a competing development contract. Reconcile documentation with accepted GitHub sources, distinguish open PRs from main and deployed behavior, and keep private documentation out of public repositories.
+Confluence documents durable decisions, rationale, procedures, source links and evidence. It does not supply a competing implementation contract. Reconcile documentation with accepted Jira/GitHub sources, distinguish open PRs from main and deployed behavior, and keep private documentation out of public repositories.
 
 | Target | Authoritative entry | Profile |
 | --- | --- | --- |

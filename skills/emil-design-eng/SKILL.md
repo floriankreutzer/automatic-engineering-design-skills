@@ -5,11 +5,19 @@ description: Apply Emil Kowalski's interaction craft to UI reviews, component po
 
 # Design Engineering
 
+## Mandatory skill routing
+
+Read and follow [the mandatory skill policy](references/skill-policy.md) before
+this workflow. Assess the complete catalog, load and apply every relevant skill
+without waiting for a separate request, and record applied, not-applicable or
+blocked coverage. Reuse matching sources already read; do not recurse between
+profiles. User scope and current project requirements remain authoritative.
+
 ## Task and project context
 
 Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources.
 
-For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths. Inspect existing design tokens, components, accessibility requirements and architecture.
+For Pavurel, load the required matching profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If the matching profile is unavailable, mark the required skill gate blocked and continue independent work from current repository sources; do not assume sibling skill paths. Inspect existing design tokens, components, accessibility requirements and architecture.
 
 Treat a review request as read-only. Complete authorized implementation work without a readiness-only response or a redundant approval stop. Clarify only a material unresolved decision. Examples do not authorize a dependency installation, publication or unrelated redesign.
 

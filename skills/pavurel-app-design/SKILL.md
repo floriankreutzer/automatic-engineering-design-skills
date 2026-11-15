@@ -1,9 +1,17 @@
 ---
 name: pavurel-app-design
-description: Review and improve Conference Manager Customer and Platform interfaces under the target repository's current central development requirements. Use for request workflows, operational lists, settings, operator views, forms, status feedback, responsive behavior and accessibility. Find and apply existing GitHub design, architecture, security, i18n and test standards; do not create a parallel design system or use the marketing website profile for authenticated application work.
+description: Review and improve Conference Manager Customer and Platform interfaces under the target repository's current central development requirements. Use for request workflows, operational lists, settings, operator views, forms, status feedback, responsive behavior and accessibility. Apply the mandatory full skill catalog, including impeccable and design-taste-frontend for every design-planning, implementation and review task. Existing GitHub design, architecture, security, i18n and test standards govern; do not create a parallel design system or use marketing layouts for authenticated application work.
 ---
 
 # Pavurel App Design
+
+## Mandatory skill routing
+
+Read and follow [the mandatory skill policy](references/skill-policy.md) before
+this workflow. Assess the complete catalog, load and apply every relevant skill
+without waiting for a separate request, and record applied, not-applicable or
+blocked coverage. Reuse matching sources already read; do not recurse between
+profiles. User scope and current project requirements remain authoritative.
 
 Make operational work understandable and efficient within the existing application. Use this profile as a workflow and source locator, not as a replacement specification.
 
@@ -16,16 +24,24 @@ Make operational work understandable and efficient within the existing applicati
 5. If a skill or external example conflicts with the repository, follow the repository and identify the discrepancy. Correct it within the authorized scope; ask only about a genuinely unresolved decision. Do not silently change a central rule to accommodate an example.
 6. Establish the application surface, role, workflow and task mode. For reviews, inspect and report without editing files or data. For implementation, complete the already authorized scoped changes and required checks.
 
-If mandatory repository guidance cannot be read, follow the repository's blocking rule. Otherwise continue the work available within scope; unavailable optional skills or tools are not a reason to invent access or create an unnecessary approval stop.
+If mandatory repository guidance cannot be read, follow the repository's blocking rule. Otherwise continue the work available within scope; missing applicable skills or required tools leave the skill gate blocked; continue independent work without inventing access or requesting approval already supplied.
 
-## Choose the surface and the useful specialist
+## Apply the mandatory catalog and design passes
+
+Before making design recommendations, editing UI or completing a design review, assess every entry in [the mandatory skill policy](references/skill-policy.md) and follow [the required design review](references/required-design-review.md). Apply the full matching baseline and every other relevant specialist. Load `impeccable` and `design-taste-frontend` even when the user names only this profile. Reuse already-loaded matching sources within the same task; do not recursively invoke this profile when a supporting skill refers back to Pavurel Design.
+
+Use Impeccable's reference-only review and operational-interface guidance. Apply Taste's hierarchy, typography, spacing, copy and visual-coherence checks to the existing app. Preserve the current native components, forms, role/status contracts and brand; do not transfer marketing heroes, mandatory photographs, decorative motion, randomized palettes or a different framework into Customer or Platform screens.
+
+Both guidance passes are mandatory. External engines and automated browser helpers are not mandatory merely because these skills are loaded. If a required source cannot be read, identify the missing source and leave the design gate incomplete while completing independent authorized work. Report all catalog entries as applied, not applicable with a concrete reason, or blocked, including source evidence, applicable findings and project-specific overrides.
+
+## Choose the surface and apply every matching specialist
 
 - Read [customer.md](references/customer.md) for Employee, Conference Manager and Tenant Admin workflows.
 - Read [platform.md](references/platform.md) for the separately served Platform Operator interface.
 - Use `pavurel-web-design` by installed name for the public marketing website instead of applying this app profile there.
 - Use `emil-design-eng`, `break-ui` and `mobile-native` for the concrete interaction, data and mobile questions in scope.
 - Use `prototype` for an actual unresolved design choice and motion specialists for justified motion work. Look up installed skills by name; do not assume sibling folders exist.
-- Use `21st-design-research` when the user requests external component research and it is available. Otherwise use available public references and the project's own components. Search availability does not authorize code installation, hosted generation or a new runtime.
+- Apply `21st-design-research` as a baseline requirement, with focused read-only search for a concrete question. If its connection/search is unavailable, report the required step as blocked and continue independent work from existing components. Search does not authorize code installation, hosted generation or a new runtime.
 
 ## Work from the existing implementation
 
@@ -59,4 +75,4 @@ Use synthetic test/preview data and mocked external mutations. Preserve canonica
 
 Select validation from the target repository's current instructions and risk-based test strategy; this profile cannot waive a required gate. Reuse existing tests and add only coverage required by the change. Check the affected workflow, relevant locales, narrow/wide layouts, keyboard/focus and motion preferences. Use actual device evidence where available and state when only emulation or source inspection was possible.
 
-Report the user-facing outcome, governing source paths, actual checks and remaining limitations. Distinguish skill maintenance, target-project installation, application changes, merged source and deployed behavior. Update Confluence as documentation of the verified result and its GitHub references; never mark a proposed profile as installed or a source review as runtime acceptance.
+Report the user-facing outcome, governing source paths, the complete mandatory catalog coverage, Impeccable and Taste guidance, actual checks and remaining limitations. Distinguish skill maintenance, target-project installation, application changes, merged source and deployed behavior. Update Confluence as documentation of the verified result and its GitHub references; never mark a proposed profile as installed or a source review as runtime acceptance.

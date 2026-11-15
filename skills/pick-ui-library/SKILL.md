@@ -1,15 +1,23 @@
 ---
 name: pick-ui-library
-description: Decide whether a frontend task needs a dependency, then use a curated library shortlist when it fits the existing architecture. Prefer native HTML/CSS and installed components for simple work. Covers numbers, OTP inputs, charts, menus, virtualization, drag and drop, toasts, state, and styling. Only runs when explicitly invoked.
+description: Decide whether a frontend task needs a dependency, then use a curated library shortlist when it fits the existing architecture. Prefer native HTML/CSS and installed components for simple work. Covers numbers, OTP inputs, charts, menus, virtualization, drag and drop, toasts, state, and styling. Required whenever the task selects or reviews a frontend implementation approach; no separate invocation is needed.
 ---
 
 # Picking The Right Library
+
+## Mandatory skill routing
+
+Read and follow [the mandatory skill policy](references/skill-policy.md) before
+this workflow. Assess the complete catalog, load and apply every relevant skill
+without waiting for a separate request, and record applied, not-applicable or
+blocked coverage. Reuse matching sources already read; do not recurse between
+profiles. User scope and current project requirements remain authoritative.
 
 ## Project contract
 
 Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources.
 
-For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths.
+For Pavurel, load the required matching profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If the matching profile is unavailable, mark the required skill gate blocked and continue independent work from current repository sources; do not assume sibling skill paths.
 
 Treat the list as candidates, not a requirement to install packages. Keep review-only requests read-only. Perform installation or integration only within authorized scope and project architecture rules; do not request the same approval again when it already exists.
 

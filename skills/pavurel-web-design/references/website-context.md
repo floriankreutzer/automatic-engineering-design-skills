@@ -25,12 +25,18 @@ Locate the source for audience, tone, commercial terms and capability claims. Ve
 
 Keep orientation for direct arrivals while linking to the owner of the detailed explanation. Preserve localized pairing and existing approved routes. Do not copy a frozen route/CTA matrix from a previous audit.
 
-## Useful specialists
+## Required skill routing
 
-Look up optional installed skills by name, not sibling paths.
+Apply the complete [mandatory skill policy](skill-policy.md). Every matching
+skill is required without separate opt-in, including the full Pavurel baseline.
+Resolve installed skills by name or inspect actual reviewed source files; do not
+assume sibling paths. The table below provides common task locators, not a
+reduced catalog. Record missing applicable sources or research as blocked.
 
 | Task | Skill |
 | --- | --- |
+| Design critique, usability and finishing | `impeccable` |
+| Composition, typography, copy and visual coherence | `design-taste-frontend` |
 | Interaction hierarchy | `emil-design-eng` |
 | Long, missing or unusual content | `break-ui` |
 | Mobile browser behavior | `mobile-native` |
@@ -38,7 +44,7 @@ Look up optional installed skills by name, not sibling paths.
 | Observed animation performance | `animation-performance` |
 | Existing motion | `review-animations` |
 | A justified transition | `animate` |
-| Requested external catalog research | `21st-design-research` |
+| Required focused catalog research | `21st-design-research` |
 | Separate authenticated application work | `pavurel-app-design` |
 
 Keep native Expo/Swift work in its own project. Use dependency specialists only for a demonstrated need under the target repository's architecture process.

@@ -1,18 +1,26 @@
 ---
 name: 21st-design-research
-description: Use 21st for focused component and layout research when the user requests 21st or an external catalog comparison. Start with available catalog search, record candidate provenance and assess fit against the target repository's current standards. Keep search, code retrieval, hosted generation and installation distinct; adapt selected ideas to the existing stack and do not imply that this skill installs or connects 21st.
+description: Required component and layout research for every Pavurel UI design-planning, implementation and review task, and for other applicable UI decisions; no separate 21st request is needed. Start with available catalog search, record candidate provenance and assess fit against the target repository's current standards. Keep search, code retrieval, hosted generation and installation distinct; adapt selected ideas to the existing stack and do not imply that this skill installs or connects 21st.
 ---
 
 # 21st Design Research
+
+## Mandatory skill routing
+
+Read and follow [the mandatory skill policy](references/skill-policy.md) before
+this workflow. Assess the complete catalog, load and apply every relevant skill
+without waiting for a separate request, and record applied, not-applicable or
+blocked coverage. Reuse matching sources already read; do not recurse between
+profiles. User scope and current project requirements remain authoritative.
 
 Use the catalog to answer a specific design question. Keep current repository requirements authoritative and external results as research material.
 
 ## Establish scope and actual availability
 
-1. Read the target repository's `AGENTS.md` and its applicable central design, architecture, development, security, dependency, asset and validation sources. For Pavurel marketing or authenticated UI work, load the corresponding installed `pavurel-web-design` or `pavurel-app-design` profile if available; otherwise use the repository sources directly.
+1. Read the target repository's `AGENTS.md` and its applicable central design, architecture, development, security, dependency, asset and validation sources. For Pavurel marketing or authenticated UI work, load the corresponding installed `pavurel-web-design` or `pavurel-app-design` profile; if its source is unavailable, record that applicable requirement as blocked and continue independent work from the repository sources.
 2. Identify the interface and decision in scope, such as a filter, review summary, form step or public comparison section. Check existing project components first.
 3. Discover the 21st tools actually exposed by the host. Use their observed schemas and connection state. [21st-reference.md](references/21st-reference.md) describes documented capabilities, not proof of a connected account or permission.
-4. Preserve a search-only instruction literally. If the needed connector is unavailable, state that limit and continue with existing components or available public documentation. Do not invent results or identifiers, probe for credentials, configure another client, or treat a generic HTTP call as a verified connector test.
+4. Preserve a search-only instruction literally. If the needed connector/search is unavailable, mark the mandatory research step blocked and continue independent work with existing components or available public documentation. That fallback does not complete the 21st requirement. Do not invent results or identifiers, probe for credentials, configure another client, or treat a generic HTTP call as a verified connector test.
 
 ## Search and shortlist
 
@@ -44,6 +52,8 @@ For Pavurel adaptations, read the [canonical icon system](https://github.com/flo
 Use isolated synthetic previews for alternatives. Implement only the selected, authorized change and run the target repository's required checks.
 
 ## Report and document
+
+Record this skill in the mandatory catalog coverage as applied or blocked. An actual focused search with no relevant candidate is evidence; an unavailable search is a blocker, not an optional omission.
 
 Distinguish documentation research, an actual catalog search, source retrieval, generated drafts and implemented code. Cite the real candidate/source and describe the adaptation. Record actual checks and any unverified connection, entitlement, licensing or runtime status.
 

@@ -1,9 +1,17 @@
 ---
 name: pavurel-web-design
-description: Design, review and improve Pavurel's Conference Manager marketing website using its approved brand, customer journey, content ownership and Astro architecture. Use for Pavurel page layouts, images and icons, sales copy, demo CTA density, repeated content, responsive behavior, accessibility, or bounded product illustrations. Combine with a specialist skill only for the specific task. Do not use this website profile to redesign the authenticated application or change product capabilities.
+description: Design, review and improve Pavurel's Conference Manager marketing website using its approved brand, customer journey, content ownership and Astro architecture. Use for Pavurel page layouts, images and icons, sales copy, demo CTA density, repeated content, responsive behavior, accessibility, or bounded product illustrations. Apply the mandatory full skill catalog, including impeccable and design-taste-frontend for every design-planning, implementation and review task. All other matching specialists are required without separate opt-in. Do not use this website profile to redesign the authenticated application or change product capabilities.
 ---
 
 # Pavurel Web Design
+
+## Mandatory skill routing
+
+Read and follow [the mandatory skill policy](references/skill-policy.md) before
+this workflow. Assess the complete catalog, load and apply every relevant skill
+without waiting for a separate request, and record applied, not-applicable or
+blocked coverage. Reuse matching sources already read; do not recurse between
+profiles. User scope and current project requirements remain authoritative.
 
 Make the customer's meeting process understandable and each next step useful. Apply the website's current GitHub development requirements; this profile supplies a workflow and source map, not a second brand, content or engineering specification.
 
@@ -13,9 +21,18 @@ Make the customer's meeting process understandable and each next step useful. Ap
 2. Read the current website's `docs/DESIGN-SYSTEM.md`, `docs/MARKETING-EXPERIENCE.md`, `docs/CONTENT-GOVERNANCE.md` and `docs/ARCHITECTURE.md`, or their current equivalents. Read relevant coding, accessibility and security standards. Inspect existing components, tokens, assets and routes.
 3. Use [website-context.md](references/website-context.md) to locate current central sources. Resolve accepted `main` and the exact work ref; use dated refs only as evidence. Keep normative token values, CTA policy, offer terms and test gates in their owning repository. Confluence documents rationale, decisions and evidence with GitHub links; it does not override the development contract. Identify conflicts and clarify only unresolved material decisions. Never infer that an intended integration is implemented.
 4. Establish the page, locale and customer question in scope. For a site-wide audit, inventory all localized routes and shared layouts, including footer destinations and legacy routes. Distinguish the marketing site, public demo launcher and authenticated application.
-5. Use an installed specialist by name only when needed. Select `pavurel-app-design` for a separate authenticated application task. Select `21st-design-research` for requested catalog research; its results remain subordinate to this repository's standards. If an optional skill or tool is unavailable, follow the project sources and complete the available work without inventing access.
+5. Apply the full baseline and every matching specialist from [the mandatory skill policy](references/skill-policy.md), including both guidance passes in [the required design review](references/required-design-review.md) before making design recommendations, editing UI or completing the review. Reuse already-loaded matching sources within the same task; do not recursively invoke this profile when a supporting skill refers back to Pavurel Design.
+6. Load every other matching specialist by name without waiting for a separate request. Select `pavurel-app-design` for a separate authenticated application task. Apply `21st-design-research` as a required focused catalog-search step. Missing applicable sources or required research capabilities leave the skill gate blocked; continue independent work and record the exact limit.
 
 For a read-only review, inspect and report without creating fixtures or editing the website. For an implementation request, complete authorized edits and proportionate checks without a redundant approval stop. Ask only about an unresolved product, commercial, brand or publication decision that affects the result.
+
+## Apply the mandatory catalog and design passes
+
+The complete catalog gate is mandatory. Use `impeccable` for design critique, usability, visual hierarchy, responsive behavior and finishing. Use `design-taste-frontend` for page composition, typography, copy, imagery and visual coherence. Both guidance passes are mandatory, even when the user names only this profile; the same requirement applies to read-only planning and review without authorizing edits.
+
+Keep the approved Pavurel brand, canonical icons, truthful content, qualified offer, CTA ownership and existing Astro architecture. Treat Taste's aesthetic defaults as recommendations within those constraints, not as permission to replace colours, hide required legal/contact details, add unsupported claims, require decorative motion or convert the project to another framework.
+
+Use Impeccable's reference-only edition. Loading either skill does not require additional engines, hooks, software or browser services. If a required source cannot be read, identify the missing source and leave the design gate incomplete while completing independent authorized work. Report all catalog entries as applied, not applicable with a concrete reason, or blocked, including source evidence, applicable findings and project-specific overrides.
 
 ## Give each page one customer purpose
 
@@ -76,7 +93,7 @@ For a site-wide content pass, verify all affected routes in both languages, CTA 
 Report the result in this order:
 
 1. Customer-facing changes and their purpose.
-2. Concrete checks and observed results; separate source inspection from browser or device verification.
+2. Complete mandatory catalog coverage, including Impeccable and Taste, concrete checks and observed results; separate source inspection from browser or device verification.
 3. Remaining limitations and the precise review or publication step, if one still requires the user's decision.
 
 Do not claim formal accessibility conformance, measured conversion improvement, successful delivery or deployment from a source review alone.

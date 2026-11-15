@@ -21,146 +21,119 @@ When a profile/example conflicts with a current repository rule, follow the repo
 
 For Pavurel icon work, follow the [canonical icon system](https://github.com/floriankreutzer/conference-manager/blob/main/docs/ICON-SYSTEM.md) and the target repository's design system. Read the linked versioned asset manifests before reuse; distinguish the asset draft from an integrated component. Keep Microsoft sign-in and other provider marks separate from Pavurel functional icons, using their original assets and owning guidance. These profiles locate the shared policy rather than maintaining another icon catalogue.
 
-## Recommended website selection
+## All skills are mandatory within scope
 
-Install the profile together with only the specialists you need. The initial website selection is:
+The complete collection contains **20 skills**. [SKILL_POLICY.md](SKILL_POLICY.md) defines their required applicability and completion gate. There are no optional specialist installations or separate invocation requirements. Assess all catalog entries at the start of a task and apply every matching skill. Record each as **applied**, **not applicable with a concrete reason**, or **blocked**. Missing sources or tools must not be silently skipped or reported as a successful review.
 
-| Skill | Purpose |
+For every Pavurel UI design-planning, implementation or review task, the required baseline is:
+
+| Scope | Required skills |
 | --- | --- |
-| [pavurel-web-design](skills/pavurel-web-design/SKILL.md) | Brand, customer questions, content ownership, demo CTA placement, qualified product/offer wording and Astro constraints. |
-| [emil-design-eng](skills/emil-design-eng/SKILL.md) | General interaction craft and contextual motion decisions. |
-| [break-ui](skills/break-ui/SKILL.md) | Long, missing and unusual content; synthetic stress cases when authorized. |
-| [mobile-native](skills/mobile-native/SKILL.md) | Mobile web navigation, forms, touch, keyboard, zoom and native browser behavior. |
-| [prototype](skills/prototype/SKILL.md) | A few comparable design variants in a preview excluded from production. |
+| Marketing website | `pavurel-web-design`, `impeccable`, `design-taste-frontend`, `emil-design-eng`, `break-ui`, `mobile-native`, `21st-design-research` |
+| Customer and Platform | `pavurel-app-design`, `impeccable`, `design-taste-frontend`, `emil-design-eng`, `break-ui`, `mobile-native`, `21st-design-research` |
+| Further matching work | `apple-design`, `pick-ui-library`, `prototype`, `animate`, `review-animations`, `animation-performance`, `find-animation-opportunities`, `improve-animations`, `animation-vocabulary`, `ask-sonner`, `animate-expo`, `write-swift`, according to the full policy |
 
-Invoke the Pavurel profile for work on the marketing website and add a specialist only when its task fits. Installed skills are looked up by name; selective installation does not require copying the whole repository or assuming another skill is at a sibling path.
+Use Impeccable's reference-only critique, usability, states and finishing guidance. Apply Taste to hierarchy, typography, spacing, copy and visual coherence, adapting it to operational screens or marketing pages as appropriate. Preserve the target brand, native components, approved content and architecture. Detailed surface guidance is bundled in each profile's `references/required-design-review.md`.
 
-## Recommended Customer and Platform selection
+Mandatory scope does not require a technology migration: `write-swift` applies to actual Swift code, `animate-expo` to a React Native/Expo project, and `ask-sonner` to an existing or approved Sonner integration. They remain installed and assessed, with a concrete non-applicability reason for an incompatible web task. A decision to retain native components can complete `pick-ui-library`; a decision against additional motion can complete motion discovery. Decorative effects and unneeded runtime helpers remain task-dependent.
 
-| Skill | Purpose |
-| --- | --- |
-| [pavurel-app-design](skills/pavurel-app-design/SKILL.md) | Locate and apply current app standards, using separate Customer and Platform review references. |
-| [emil-design-eng](skills/emil-design-eng/SKILL.md) | Form, action, feedback and interaction hierarchy. |
-| [break-ui](skills/break-ui/SKILL.md) | Relevant synthetic data/state boundaries and robust layouts. |
-| [mobile-native](skills/mobile-native/SKILL.md) | Mobile web forms, dialogs, keyboard, scrolling and zoom. |
+Each skill links a self-contained copy of the policy. Reuse sources already read for the same task and avoid recursive profile invocation. Current project standards and the user's task still govern what may change. Review-only work stays read-only; fixtures, previews, dependency changes, publishing and paid services require applicable authorization.
 
-Add `prototype` only for a concrete design choice and motion specialists only for a relevant task. The verified app architecture uses native ES modules; do not install React, Sonner, Expo or Swift tooling merely to follow an example. Read the current repository architecture on each later use.
+## Required 21st research
 
-## Optional 21st research
+[21st-design-research](skills/21st-design-research/SKILL.md) is part of the Pavurel baseline. Frame a concrete component/layout question, discover the actually available connection and run focused read-only catalog search. Record relevant source IDs, URLs, provenance, architecture fit and known limitations. No separate request naming 21st is needed.
 
-[21st-design-research](skills/21st-design-research/SKILL.md) adds a search-first research workflow for either UI profile. It discovers the tools actually available, records source provenance and adapts selected patterns to existing components and tokens. Source retrieval, hosted generation and installation are separate operations with their own scope, license, quota and cost checks.
+If the connection or required search is unavailable, mark that step **blocked** and continue independent work using existing project components. That fallback does not complete the 21st requirement. An actual relevant search with no suitable result is valid evidence. Source retrieval, hosted generation, installation and account changes remain distinct operations with their own scope, rights, entitlement and cost conditions. Installing this collection does not connect an account or add service calls to the shipped product.
 
-The skill does not connect an account, install MCP software or add 21st calls to the product. A documented capability is not a tested connection. Existing repository components remain a valid fallback.
+## Install the complete reviewed collection
 
-## Install a reviewed version of this fork
+Creating or editing this repository does not automatically install skills in another project or deploy an application. Install the full catalog together to satisfy its source dependencies; invocation follows the applicability policy.
 
-This repository contains instructions and reference examples. Creating or editing it does not automatically install the skills in another project or deploy an application.
+1. Clone this fork into a source directory and check out the approved full commit.
+2. From the target project, run the pinned installer with all 20 named skills.
+3. Choose **Project** at the installer's installation-scope prompt, inspect the resulting changes and preserve the project's existing conventions and instructions.
 
-1. Clone **this fork** into a source directory. Replace the example paths and `REVIEWED_COMMIT_SHA` with the approved full commit from the review.
-2. Check out that exact commit and record it with the target project's skill update.
-3. Run the pinned CLI from the **target project**, selecting the skills explicitly.
+Replace the example paths and `REVIEWED_COMMIT_SHA` with the actual reviewed values:
 
 ```bash
 git clone https://github.com/floriankreutzer/automatic-engineering-design-skills.git /path/to/design-skills
 git -C /path/to/design-skills checkout --detach REVIEWED_COMMIT_SHA
 git -C /path/to/design-skills rev-parse HEAD
-```
-
-From the target project:
-
-```bash
-cd /path/to/conference-manager-website
+cd /path/to/target-project
 npx skills@1.7.4 add /path/to/design-skills \
   --agent codex \
   --skill pavurel-web-design \
+  --skill pavurel-app-design \
+  --skill impeccable \
+  --skill design-taste-frontend \
   --skill emil-design-eng \
   --skill break-ui \
   --skill mobile-native \
-  --skill prototype
+  --skill 21st-design-research \
+  --skill apple-design \
+  --skill pick-ui-library \
+  --skill prototype \
+  --skill animate \
+  --skill review-animations \
+  --skill animation-performance \
+  --skill find-animation-opportunities \
+  --skill improve-animations \
+  --skill animation-vocabulary \
+  --skill ask-sonner \
+  --skill animate-expo \
+  --skill write-swift
 ```
 
-For Customer and Platform, run from their application checkout instead:
-
-```bash
-cd /path/to/conference-manager
-npx skills@1.7.4 add /path/to/design-skills \
-  --agent codex \
-  --skill pavurel-app-design \
-  --skill emil-design-eng \
-  --skill break-ui \
-  --skill mobile-native
-```
-
-For an authorized 21st research workflow, select `--skill 21st-design-research` separately using the same reviewed source checkout. Preserve existing installation conventions; do not configure an external account merely to install the Markdown instructions.
-
-At the installer's **Installation scope** prompt, choose **Project** to install for the target project. Review the resulting changes before committing; preserve existing skills and instructions. Install an optional specialist with the same reviewed source path and its explicit `--skill` name.
-
-The `agents/openai.yaml` policies for `prototype`, `pick-ui-library`, `review-animations` and `21st-design-research` preserve explicit invocation in Codex. If another supported agent is the target, choose it explicitly and configure its equivalent invocation policy; Codex metadata does not establish the same behavior in every host. See the target host's documentation, for example [Claude Code invocation controls](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill).
+All `agents/openai.yaml` files enable implicit invocation. This permits automatic task routing where the host supports that metadata; it does not enforce loading in every host or grant tools and permissions. If another supported agent is the target, choose it explicitly and inspect its equivalent invocation behavior. A partial installation leaves matching missing skills blocked.
 
 CLI syntax and version were checked against the official [skills 1.7.4 source](https://github.com/vercel-labs/skills/tree/a80e4c9d12d607631249d4d7d059f835d4b2f13a). The installer has its own network and telemetry behavior; see its [documentation](https://github.com/vercel-labs/skills/blob/a80e4c9d12d607631249d4d7d059f835d4b2f13a/docs/troubleshooting.md). Review a CLI update deliberately instead of silently switching to `@latest`.
 
 ## Private ChatGPT plugin package
 
-The versioned manifest in `packaging/pavurel-design/plugin.json` and the network-free Python 3 builder package exactly three existing skills: `pavurel-web-design`, `pavurel-app-design` and `21st-design-research`. Their eleven source files are copied byte-for-byte, including references and agent metadata. Optional specialists remain separate. The original MIT license and attribution are included.
+The versioned manifest in `packaging/pavurel-design/plugin.json` and the network-free Python 3 builder package **all 20 skills**, including their complete reviewed resources, agent metadata and policy references. `skill-catalog.json` defines the explicit full inventory. `required-design-skills.json` pins Impeccable and Taste editions and resource hashes. Both inventories are included in the archive and recorded in source provenance.
 
-From a reviewed checkout of this repository, build the package with its full accepted commit SHA:
+The full validation suite requires Python 3 and Node 22+ for offline icon-helper regression checks. The archive builder itself requires only Python 3 and does not execute imported helpers.
+
+From a reviewed checkout, run the validation and build with its accepted full commit SHA:
 
 ```bash
+python3 -m unittest discover -s tests -v
 python3 scripts/package_pavurel_plugin.py \
   --source-ref REVIEWED_COMMIT_SHA \
-  --output dist/pavurel-design-1.0.0.zip
+  --output dist/pavurel-design-1.1.0.zip
 ```
 
-Verify that the source inputs match that commit before building. The builder records the supplied source ref and hashes; it does not independently authenticate the commit. Its explicit file allowlist keeps unrelated skills and local files out of the package. Update that allowlist deliberately if a selected skill gains a required resource. Identical inputs produce the same archive with fixed entry ordering, timestamps and modes. Generated archives stay outside version control.
+Verify that source inputs match that commit before building. The builder records the supplied ref and hashes; it does not independently authenticate the commit. It rejects catalog omissions, missing resources, divergent policy copies, incomplete routing tables, missing entrypoint policy links, disabled or ambiguous implicit invocation, invalid hashes, unsafe paths and symlink/source-overwrite hazards. Unlisted local files are excluded. Update the explicit inventory deliberately when resources change. Identical inputs produce the same archive with fixed ordering, timestamps and modes. Archives stay outside version control.
 
-The private account package contains instructions and supporting files only. It adds no server, application runtime, account credentials or mandatory 21st connection. Preserve `21st-design-research`'s explicit-invocation policy. Its optional external research still requires the actual available tools and the user's task scope.
+The package includes Taste's helper scripts and assets. The builder does not execute them, install a runtime, configure browser profiles or register hooks. Impeccable remains reference-only. Follow the policy and inspect helpers before any task-specific execution. Preserve original attribution and each imported license; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-Save the inspected archive through the supported Plugin Creator account flow, then verify the returned scope, component inventory and installation state. Account storage, installation and availability in a new conversation are separate checks. Test the installed profiles with relevant read-only website and application tasks and a requested search-only 21st task. GitHub remains authoritative for development; copying this package does not establish automatic GitHub-to-account synchronization. Keep private plugin identifiers, account receipts and Confluence URLs out of this public repository.
+Save the inspected archive through the supported Plugin Creator account flow and verify the returned scope, skill inventory and stored contents. Preserve the existing private audience and account presentation metadata. Account storage, installation and availability in a new conversation are separate checks. Test realistic read-only website/application tasks and required research behavior, including missing-capability cases. GitHub remains authoritative; publishing this package does not establish automatic synchronization. Keep private identifiers, account receipts and Confluence URLs out of this public repository.
 
-## Optional specialists
+## Using the workflow
 
-| Skill | Use when |
-| --- | --- |
-| [animate](skills/animate/SKILL.md) | A justified transition or feedback animation needs implementation. |
-| [animation-performance](skills/animation-performance/SKILL.md) | An observed animation problem needs diagnosis against the installed version and target browsers. |
-| [review-animations](skills/review-animations/SKILL.md) | Existing motion needs a contextual review; function and accessibility come first. |
-| [find-animation-opportunities](skills/find-animation-opportunities/SKILL.md) | A focused review may identify a small number of useful motion opportunities. |
-| [improve-animations](skills/improve-animations/SKILL.md) | A larger application needs an organized audit and implementation plan. |
-| [animation-vocabulary](skills/animation-vocabulary/SKILL.md) | A motion effect needs a precise shared name. |
-| [apple-design](skills/apple-design/SKILL.md) | Selected interaction principles help a web task; the target brand retains priority over Apple aesthetics. |
-| [pick-ui-library](skills/pick-ui-library/SKILL.md) | A real requirement calls for a library after checking the existing stack and native options. |
-| [ask-sonner](skills/ask-sonner/SKILL.md) | The project actually uses or has approved Sonner; verify its installed types. |
-| [animate-expo](skills/animate-expo/SKILL.md) | A separate React Native / Expo project needs native motion. |
-| [write-swift](skills/write-swift/SKILL.md) | A separate Swift project needs toolchain-specific guidance. |
+Naming the matching profile is enough to trigger the complete mandatory policy:
 
-## How to use the selection
+- “Use `$pavurel-web-design` to review the German and English pages for duplicate content and demo CTA placement without editing.”
+- “Use `$pavurel-app-design` to improve the approved request-summary layout within the current application standards.”
+- “Use `$prototype` to compare two navigation alternatives in an isolated preview.”
+- “Use `$21st-design-research` to search for relevant review-panel patterns; do not retrieve code or generate variants.”
 
-Examples:
-
-- “Use `$pavurel-web-design` to review every German and English page for duplicate content and demo-request links. Report findings without editing.”
-- “Use `$pavurel-web-design` and `$mobile-native` to implement the approved mobile navigation improvement within the existing Astro components.”
-- “Use `$pavurel-web-design` and `$prototype` to compare two integration-overview layouts in a local preview.”
-- “Use `$pavurel-web-design` and `$break-ui` to check the request form with long company names and missing optional values.”
-- “Use `$pavurel-app-design` and `$mobile-native` to review the existing request wizard in German and English without editing.”
-- “Use `$pavurel-app-design` to implement the approved Platform status-summary improvement using existing components and the current repository rules.”
-- “Use `$21st-design-research` to search for relevant review-panel patterns. Return up to three source references; do not retrieve code or generate variants.”
-
-A review-only request stays read-only. An implementation request permits the necessary scoped edits and checks without repeating approval for already authorized work. Fixtures, previews and library changes remain subject to the actual task and target-project rules. Keep publication and merge decisions within the user's authorization.
+Directly invoking a specialist still applies the same catalog gate. Report actual sources, findings, project overrides and checks. Keep a compact complete coverage record in task or PR evidence; group related non-applicability reasons when communicating results. Do not claim runtime acceptance from source inspection or completion while an applicable requirement is blocked.
 
 ## Fork adaptations and maintenance
 
 The fork started from upstream commit `2d228630ba1446365f614a108cb8252f1feda202`. The Pavurel adaptation:
 
 - Adds website and application profiles with current central-source locators and dated verification provenance.
-- Adds optional 21st research without a framework, account or runtime dependency.
+- Adds required 21st research with explicit missing-capability reporting and no implied account, spending or production-runtime authorization.
 - Keeps GitHub development requirements authoritative and Confluence documentation linked to them.
 - Makes project brand, architecture, accessibility and user scope explicit across the skills.
 - Corrects visibility/focus, progressive enhancement, gesture zoom and prototype-isolation guidance.
 - Makes Motion performance advice version-aware and review heuristics contextual.
 - Corrects the prototype picker, Sonner option reference and identified native example errors.
-- Preserves the original collection for separately scoped tasks without installing it all by default.
+- Packages the complete collection and makes all 20 skills mandatory within their scope, including reviewed Impeccable and Taste sources.
 
-When updating from upstream, inspect the diff against these adaptations. Verify library advice against installed versions and primary documentation. Validate changed skill frontmatter, bundled relative links and examples that contain behavior; use realistic task checks for substantial instruction changes. Keep README selection and UI metadata aligned with the actual skills. Do not add production dependencies or publishing workflows merely to distribute Markdown skills.
+When updating from upstream, inspect the diff against these adaptations. Verify library advice against installed versions and primary documentation. Validate changed skill frontmatter, bundled relative links and examples that contain behavior; use realistic task checks for substantial instruction changes. Keep the policy, catalog, README and UI metadata aligned with the actual skills. Do not add production dependencies or publishing workflows merely to distribute Markdown skills.
 
 The public source maps were checked on 2026-10-24 against website `63c72fed1502bc43b4142900f87d052a8b967350` and application `03cc888b434deaada756447359703a166cd85c23`. They point to current target-project sources instead of treating those snapshots as permanent specifications. Keep internal business and customer data outside this public repository.
 
@@ -170,4 +143,4 @@ Icon-routing references were reviewed separately on 2026-10-27 against the publi
 
 Original design engineering guidance by **Emil Kowalski**. The upstream work and examples remain credited; this fork adapts them for Pavurel and corrects the reviewed issues. See the original [skill collection](https://github.com/emilkowalski/skills) and [author's site](https://emilkowal.ski/skill).
 
-The existing [MIT license](LICENSE) is retained. Keep its copyright and permission notice with copies or substantial portions.
+The existing [MIT license](LICENSE) is retained. Keep its copyright and permission notice with copies or substantial portions. Impeccable retains Apache-2.0 and Taste retains MIT plus applicable asset credits; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

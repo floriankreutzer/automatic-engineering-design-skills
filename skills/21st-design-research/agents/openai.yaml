@@ -3,4 +3,4 @@ interface:
   short_description: "Research components within the existing project rules"
   default_prompt: "Use $21st-design-research to find relevant component references for this interface, starting with catalog search."
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

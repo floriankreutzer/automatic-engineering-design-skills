@@ -1,0 +1,39 @@
+name: Design skill package
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: design-skill-package-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: Design skill package
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the reviewed change
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+      - name: Set up Node for offline helper regression tests
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Validate catalog, resources and package boundaries
+        run: python3 -m unittest discover -s tests -v
+      - name: Build the complete package
+        shell: bash
+        run: |
+          set -euo pipefail
+          REVIEWED_REF="$(git rev-parse HEAD)"
+          python3 scripts/package_pavurel_plugin.py \
+            --source-ref "$REVIEWED_REF" \
+            --output dist/pavurel-design-1.1.0.zip

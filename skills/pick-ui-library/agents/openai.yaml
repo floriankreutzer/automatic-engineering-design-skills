@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $pick-ui-library to choose the simplest suitable approach for this UI task, starting with native HTML/CSS and existing dependencies."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

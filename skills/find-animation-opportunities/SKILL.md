@@ -1,9 +1,17 @@
 ---
 name: find-animation-opportunities
-description: Search a codebase or UI for moments that could benefit from motion, and reject unnecessary effects. Discovery is read-only and proposes specific options grounded in project conventions; continue to implementation when already authorized. Use when the user asks "what could be animated here?" or wants to "make this feel more alive". For fixing existing animations, use improve-animations or review-animations instead.
+description: Search a codebase or UI for moments that could benefit from motion, and reject unnecessary effects. Discovery is read-only and proposes specific options grounded in project conventions; continue to implementation when already authorized. Use when the user asks "what could be animated here?" or wants to "make this feel more alive". For fixing existing animations, use improve-animations or review-animations instead. Required automatically whenever the mandatory catalog routes the task here.
 ---
 
 # Finding Animation Opportunities
+
+## Mandatory skill routing
+
+Read and follow [the mandatory skill policy](references/skill-policy.md) before
+this workflow. Assess the complete catalog, load and apply every relevant skill
+without waiting for a separate request, and record applied, not-applicable or
+blocked coverage. Reuse matching sources already read; do not recurse between
+profiles. User scope and current project requirements remain authoritative.
 
 ## Contents
 
@@ -14,7 +22,7 @@ description: Search a codebase or UI for moments that could benefit from motion,
 
 Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources.
 
-For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths. Do not add a framework or dependency merely to use an example.
+For Pavurel, load the required matching profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If the matching profile is unavailable, mark the required skill gate blocked and continue independent work from current repository sources; do not assume sibling skill paths. Do not add a framework or dependency merely to use an example.
 
 Continue the active task without a readiness-only response. If no actionable request or artifact is available, ask for the missing context.
 

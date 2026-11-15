@@ -1,0 +1,6 @@
+interface:
+  display_name: "Taste Skill"
+  short_description: "Websites mit klarer Gestaltung und eigener Identität"
+  default_prompt: "Nutze $design-taste-frontend, um die gewünschte Website passend zur Marke und zu den Projektvorgaben zu gestalten."
+policy:
+  allow_implicit_invocation: true

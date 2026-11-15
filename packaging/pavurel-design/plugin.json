@@ -1,17 +1,19 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pavurel-design",
-  "version": "1.0.0",
-  "description": "Review and improve Pavurel websites and Conference Manager Customer and Platform interfaces under their current repository standards, with optional requested 21st design research.",
-  "author": { "name": "Pavurel" },
+  "version": "1.1.0",
+  "description": "Apply all 20 design skills as required by task scope for Pavurel websites and Conference Manager interfaces, including Impeccable, Taste and focused 21st research under current repository standards.",
+  "author": {
+    "name": "Pavurel"
+  },
   "repository": "https://github.com/floriankreutzer/automatic-engineering-design-skills",
-  "license": "MIT",
+  "license": "SEE LICENSE IN THIRD_PARTY_NOTICES.md",
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "Pavurel Design",
         "shortDescription": "Pavurel design workflows",
-        "longDescription": "Apply the existing Pavurel website or Customer and Platform design profile while keeping current target-repository requirements authoritative. Includes three reviewed skills and their supporting references. Use 21st research only when requested and when the separate connection is actually available.",
+        "longDescription": "Apply the complete reviewed design-skill catalog without separate opt-in. Each task records every skill as applied, not applicable with a scope reason, or blocked. Includes all 20 skills, supporting resources and source licenses. Existing project requirements govern; native specialists remain confined to compatible stacks. Impeccable is reference-only. Taste helpers and external research operations retain their task, tool and permission boundaries. Missing required sources or 21st search capabilities are reported explicitly.",
         "developerName": "Pavurel",
         "category": "Developer Tools",
         "capabilities": [],

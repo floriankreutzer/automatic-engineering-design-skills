@@ -5,11 +5,19 @@ description: Apple's approach to interface design and fluid, physical motion, tr
 
 # Apple Design
 
+## Mandatory skill routing
+
+Read and follow [the mandatory skill policy](references/skill-policy.md) before
+this workflow. Assess the complete catalog, load and apply every relevant skill
+without waiting for a separate request, and record applied, not-applicable or
+blocked coverage. Reuse matching sources already read; do not recurse between
+profiles. User scope and current project requirements remain authoritative.
+
 ## Scope and precedence
 
 Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources. Examples do not authorize unrelated changes or dependency installation. Work on the concrete task instead of stopping at a readiness message.
 
-For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths. Use the interaction principles here without imposing Apple fonts, translucent chrome, or extra animation on an existing brand. Prefer the project's current web primitives and animation tools.
+For Pavurel, load the required matching profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If the matching profile is unavailable, mark the required skill gate blocked and continue independent work from current repository sources; do not assume sibling skill paths. Use the interaction principles here without imposing Apple fonts, translucent chrome, or extra animation on an existing brand. Prefer the project's current web primitives and animation tools.
 
 How Apple builds interfaces that stop feeling like a computer and start feeling like an extension of you. This knowledge comes from Apple's WWDC design talks — chiefly *Designing Fluid Interfaces* (WWDC 2018) — distilled and translated into the web platform (CSS, Pointer Events, `requestAnimationFrame`, spring libraries like Motion/Framer Motion).
 

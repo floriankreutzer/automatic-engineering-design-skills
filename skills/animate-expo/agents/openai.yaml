@@ -1,0 +1,6 @@
+interface:
+  display_name: "Building Animations in Expo"
+  short_description: "Required design guidance within the applicable task"
+  default_prompt: "Use $animate-expo for this task, following the mandatory skill policy and current project requirements."
+policy:
+  allow_implicit_invocation: true

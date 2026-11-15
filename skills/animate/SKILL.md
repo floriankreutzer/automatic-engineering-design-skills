@@ -1,9 +1,17 @@
 ---
 name: animate
-description: Build an animation from scratch, making the decisions in the order that determines whether it feels right — should it animate at all, what purpose, which tool, which properties, which curve and duration, how it interrupts, how it exits. Writes the implementation. Use when asked to animate something, add motion, make a component feel alive, or build a transition. For critiquing existing motion use review-animations; for auditing a whole codebase use improve-animations.
+description: Build an animation from scratch, making the decisions in the order that determines whether it feels right — should it animate at all, what purpose, which tool, which properties, which curve and duration, how it interrupts, how it exits. Writes the implementation. Use when asked to animate something, add motion, make a component feel alive, or build a transition. For critiquing existing motion use review-animations; for auditing a whole codebase use improve-animations. Required automatically whenever the mandatory catalog routes the task here.
 ---
 
 # Building Animations
+
+## Mandatory skill routing
+
+Read and follow [the mandatory skill policy](references/skill-policy.md) before
+this workflow. Assess the complete catalog, load and apply every relevant skill
+without waiting for a separate request, and record applied, not-applicable or
+blocked coverage. Reuse matching sources already read; do not recurse between
+profiles. User scope and current project requirements remain authoritative.
 
 ## Contents
 
@@ -14,7 +22,7 @@ description: Build an animation from scratch, making the decisions in the order 
 
 Follow host/tool instructions and the user's authorized task. Read the target repository's current `AGENTS.md`, applicable nested instructions, and referenced central design, coding, architecture, security, content, and test sources; they govern development. Use this skill as supplementary guidance. Confluence documentation links cannot override those sources.
 
-For Pavurel, load an available installed profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If unavailable, follow the current repository sources; do not assume sibling skill paths. Do not add a framework or dependency merely to use an example.
+For Pavurel, load the required matching profile by name: `pavurel-web-design` for marketing website work, `pavurel-app-design` for authenticated Conference Manager Customer/Platform UI. If the matching profile is unavailable, mark the required skill gate blocked and continue independent work from current repository sources; do not assume sibling skill paths. Do not add a framework or dependency merely to use an example.
 
 Continue the active task without a readiness-only response. If no actionable request or artifact is available, ask for the missing context.
 

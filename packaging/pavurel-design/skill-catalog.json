@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "policy": "required-when-applicable",
+  "skills": [
+    {
+      "name": "21st-design-research",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/21st-reference.md",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "animate",
+      "files": [
+        "RECIPES.md",
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "animate-expo",
+      "files": [
+        "RECIPES.md",
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "animation-performance",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "animation-vocabulary",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "apple-design",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "ask-sonner",
+      "files": [
+        "API.md",
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "break-ui",
+      "files": [
+        "CATALOG.md",
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "design-taste-frontend",
+      "vendor_lock": true
+    },
+    {
+      "name": "emil-design-eng",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/component-patterns.md",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "find-animation-opportunities",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "impeccable",
+      "vendor_lock": true
+    },
+    {
+      "name": "improve-animations",
+      "files": [
+        "AUDIT.md",
+        "PLAN-TEMPLATE.md",
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "mobile-native",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "pavurel-app-design",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/customer.md",
+        "references/platform.md",
+        "references/repository-sources.md",
+        "references/required-design-review.md",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "pavurel-web-design",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/required-design-review.md",
+        "references/skill-policy.md",
+        "references/website-context.md"
+      ]
+    },
+    {
+      "name": "pick-ui-library",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "prototype",
+      "files": [
+        "PICKER.md",
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "review-animations",
+      "files": [
+        "SKILL.md",
+        "STANDARDS.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    },
+    {
+      "name": "write-swift",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/skill-policy.md"
+      ]
+    }
+  ]
+}

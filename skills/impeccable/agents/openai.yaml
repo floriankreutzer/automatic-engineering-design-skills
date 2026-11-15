@@ -1,0 +1,6 @@
+interface:
+  display_name: "Impeccable Design"
+  short_description: "Design prüfen und verbessern mit klaren Referenzabläufen"
+  default_prompt: "Nutze $impeccable, um diese Oberfläche anhand der Projektvorgaben zu prüfen und gezielt zu verbessern."
+policy:
+  allow_implicit_invocation: true
